@@ -1,0 +1,246 @@
+# Created by .ignore support plugin (hsz.mobi)
+### VirtualEnv template
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+.Python
+[Bb]in
+[Ii]nclude
+[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Ss]cripts
+pyvenv.cfg
+.venv
+pip-selfcheck.json
+### SublimeText template
+# Cache files for Sublime Text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# Workspace files are user-specific
+*.sublime-workspace
+
+# Project files should be checked into the repository, unless a significant
+# proportion of contributors will probably not be using Sublime Text
+# *.sublime-project
+
+# SFTP configuration file
+sftp-config.json
+
+# Package control specific files
+Package Control.last-run
+Package Control.ca-list
+Package Control.ca-bundle
+Package Control.system-ca-bundle
+Package Control.cache/
+Package Control.ca-certs/
+Package Control.merged-ca-bundle
+Package Control.user-ca-bundle
+oscrypto-ca-bundle.crt
+bh_unicode_properties.cache
+
+# Sublime-github package stores a github token in this file
+# https://packagecontrol.io/packages/sublime-github
+GitHub.sublime-settings
+### JetBrains template
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Sensitive or high-churn files
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+
+# Gradle
+.idea/**/gradle.xml
+.idea/**/libraries
+
+# Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+# .idea/modules.xml
+# .idea/*.iml
+# .idea/modules
+
+# CMake
+cmake-build-*/
+
+# Mongo Explorer plugin
+.idea/**/mongoSettings.xml
+
+# File-based project format
+*.iws
+
+# IntelliJ
+out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Cursive Clojure plugin
+.idea/replstate.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# Editor-based Rest Client
+.idea/httpRequests
+
+.env_win/Include/
+.env_win/Lib/site-packages/Django-2.1.dist-info/
+.env_win/Lib/site-packages/django/__init__.py
+.env_win/Lib/site-packages/django/__main__.py
+.env_win/Lib/site-packages/django/__pycache__/
+.env_win/Lib/site-packages/django/apps/
+.env_win/Lib/site-packages/django/bin/
+.env_win/Lib/site-packages/django/conf/
+.env_win/Lib/site-packages/django/contrib/__init__.py
+.env_win/Lib/site-packages/django/contrib/__pycache__/
+.env_win/Lib/site-packages/django/contrib/admin/
+.env_win/Lib/site-packages/django/contrib/admindocs/__pycache__/
+.env_win/Lib/site-packages/django/contrib/auth/
+.env_win/Lib/site-packages/django/contrib/contenttypes/__pycache__/
+.env_win/Lib/site-packages/django/contrib/contenttypes/locale/dsb/LC_MESSAGES/django.mo
+.env_win/Lib/site-packages/django/contrib/contenttypes/locale/en_AU/
+.env_win/Lib/site-packages/django/contrib/contenttypes/locale/en_GB/
+.env_win/Lib/site-packages/django/contrib/contenttypes/locale/es_AR/
+.env_win/Lib/site-packages/django/contrib/contenttypes/locale/es_CO/
+.env_win/Lib/site-packages/django/contrib/contenttypes/locale/es_MX/
+.env_win/Lib/site-packages/django/contrib/contenttypes/locale/es_VE/
+.env_win/Lib/site-packages/django/contrib/contenttypes/locale/hsb/
+.env_win/Lib/site-packages/django/contrib/contenttypes/locale/pt_BR/
+.env_win/Lib/site-packages/django/contrib/contenttypes/locale/sr_Latn/
+.env_win/Lib/site-packages/django/contrib/contenttypes/locale/udm/
+.env_win/Lib/site-packages/django/contrib/contenttypes/locale/zh_Hans/
+.env_win/Lib/site-packages/django/contrib/contenttypes/locale/zh_Hant/
+.env_win/Lib/site-packages/django/contrib/contenttypes/management/
+.env_win/Lib/site-packages/django/contrib/contenttypes/migrations/
+.env_win/Lib/site-packages/django/contrib/flatpages/__pycache__/
+.env_win/Lib/site-packages/django/contrib/flatpages/migrations/__pycache__/
+.env_win/Lib/site-packages/django/contrib/flatpages/templatetags/__pycache__/
+.env_win/Lib/site-packages/django/contrib/gis/
+.env_win/Lib/site-packages/django/contrib/humanize/
+.env_win/Lib/site-packages/django/contrib/messages/
+.env_win/Lib/site-packages/django/contrib/postgres/
+.env_win/Lib/site-packages/django/contrib/redirects/__pycache__/
+.env_win/Lib/site-packages/django/contrib/redirects/migrations/__pycache__/
+.env_win/Lib/site-packages/django/contrib/sessions/__init__.py
+.env_win/Lib/site-packages/django/contrib/sessions/__pycache__/
+.env_win/Lib/site-packages/django/contrib/sessions/apps.py
+.env_win/Lib/site-packages/django/contrib/sessions/backends/__pycache__/
+.env_win/Lib/site-packages/django/contrib/sessions/base_session.py
+.env_win/Lib/site-packages/django/contrib/sessions/exceptions.py
+.env_win/Lib/site-packages/django/contrib/sessions/locale/af/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/ar/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/az/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/be/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/bg/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/bn/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/br/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/bs/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/ca/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/cs/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/cy/
+.env_win/Lib/sit
+e-packages/django/contrib/sessions/locale/da/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/de/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/el/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/en/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/eo/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/es/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/et/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/eu/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/fa/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/fi/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/fr/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/fy/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/ga/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/gd/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/gl/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/he/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/hi/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/hr/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/hu/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/ia/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/id/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/io/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/is/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/it/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/ja/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/ka/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/kk/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/km/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/kn/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/ko/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/lb/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/lt/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/lv/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/mk/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/ml/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/mn/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/mr/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/my/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/nb/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/ne/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/nl/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/nn/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/os/
+.env_win/Lib/site-packages/django/contrib/sessions/locale/pa/
+.env_win/Lib/site-packages/django/contrib/sessions/management/commands/__pycache__/
+.env_win/Lib/site-packages/django/contrib/sessions/middleware.py
+.env_win/Lib/site-packages/django/contrib/sessions/migrations/__pycache__/
+.env_win/Lib/site-packages/django/contrib/sessions/models.py
+.env_win/Lib/site-packages/django/contrib/sessions/serializers.py
+.env_win/Lib/site-packages/django/contrib/sitemaps/__pycache__/
+.env_win/Lib/site-packages/django/contrib/sitemaps/management/commands/__pycache__/
+.env_win/Lib/site-packages/django/contrib/sites/
+.env_win/Lib/site-packages/django/contrib/staticfiles/__pycache__/
+.env_win/Lib/site-packages/django/contrib/staticfiles/management/commands/__pyca
+che__/
+.env_win/Lib/site-packages/django/contrib/staticfiles/templatetags/__pycache__/
+.env_win/Lib/site-packages/django/contrib/syndication/__pycache__/
+.env_win/Lib/site-packages/django/core/
+.env_win/Lib/site-packages/django/db/
+.env_win/Lib/site-packages/django/dispatch/
+.env_win/Lib/site-packages/django/forms/
+.env_win/Lib/site-packages/django/http/
+.env_win/Lib/site-packages/django/middleware/
+.env_win/Lib/site-packages/django/shortcuts.py
+.env_win/Lib/site-packages/django/template/
+.env_win/Lib/site-packages/django/templatetags/
+.env_win/Lib/site-packages/django/test/
+.env_win/Lib/site-packages/django/urls/
+.env_win/Lib/site-packages/django/utils/
+.env_win/Lib/site-packages/django/views/
+.env_win/Lib/site-packages/easy-install.pth
+.env_win/Lib/site-packages/pip-10.0.1-py3.6.egg/
+.env_win/Lib/site-packages/pytz-2018.5.dist-info/
+.env_win/Lib/site-packages/pytz/
+.env_win/Lib/site-packages/setuptools-39.1.0-py3.6.egg
+.env_win/Lib/site-packages/setuptools.pth
+.env_win/Lib/tcl8.6/
+.env_win/Scripts/
+.env_win/pip-selfcheck.json
+.env_win/pyvenv.cfg
+.gitignore
+.idea/
+
