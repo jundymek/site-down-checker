@@ -1,0 +1,19 @@
+body {
+    padding: 20px;
+}
+
+.h1-title {
+  text-align: center;
+  color: #808080;
+  padding-bottom: 2vh;
+}
+a {
+  text-decoration: underline;
+  color: #696969;
+  font-weight: 600;
+}
+a:hover {
+  color: #696969;
+}
+
+

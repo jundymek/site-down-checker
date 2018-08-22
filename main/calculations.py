@@ -23,8 +23,9 @@ class SiteDownChecker:
                                            last_status=r.status_code,
                                            last_response_time=r.elapsed.total_seconds(),
                                            last_check=datetime.now())
-            data['status_code'] = r.status_code
-            data['response_time'] = r.elapsed.total_seconds()
+            data['url'] = self.url
+            data['last_status'] = r.status_code
+            data['last_response_time'] = r.elapsed.total_seconds()
             data['last_check'] = datetime.now().strftime("%Y/%m/%d-%H:%M:%S")
             return data
         except requests.exceptions.RequestException as e:

@@ -12,12 +12,15 @@ def index(request):
         if form.is_valid():
             cd = form.cleaned_data
             if SiteToCheck.objects.filter(url=cd['url']).exists():
-                messages.info(request, 'Taka strona już istnieje w bazie')
-                return render(request, 'index.html', {'form': form, 'sites': sites})
+                messages.error(request, 'Taka strona już istnieje w bazie')
+                label_for_modal = 'Uwaga!!!'
+                return render(request, 'index.html', {'form': form, 'sites': sites, 'label': label_for_modal})
             else:
                 data = SiteDownChecker(cd['url']).status()
-                messages.info(request, data)
-            return render(request, 'index.html', {'form': form, 'data': data, 'sites': sites})
+                label_for_modal = f"Url: {data['url']} został dodany"
+                modal_text = f"Status: {data['last_status']}, Response time: {data['last_response_time']}"
+                messages.success(request, modal_text)
+            return render(request, 'index.html', {'form': form, 'data': data, 'sites': sites, 'label': label_for_modal})
     else:
         form = SiteToCheckForm
         if request.GET.get('mybtn'):
@@ -26,3 +29,5 @@ def index(request):
             return redirect('/')
 
     return render(request, 'index.html', {'form': form, 'sites': sites})
+
+# TODO: add login/logout view

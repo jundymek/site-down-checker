@@ -113,7 +113,7 @@ fabric.properties
 .gitignore
 .idea/
 
-SITEDOWNCHECKER/__pycache__/
+site-down-checker/__pycache__/
 db.sqlite3
 main/__pycache__/
 main/migrations/__pycache__/
