@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load bootstrap %}
 
 {% block title %} Site checker - main {% endblock %}
@@ -9,9 +10,18 @@
         <p>by <a href="#">jundymek</a></p>
         <p>visit me on <a href="https://github.com/jundymek"><i class="fab fa-github fa-2x"></i></a></p>
     </div>
+    {% if user.is_authenticated %}
+        You are logged as {{ user.username }}
+        <p><a href="{% url 'logout' %}">logout</a></p>
+    {% endif %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
     <form action='/' method="POST">{% csrf_token %}
         {{ form|bootstrap }}
-        <button type="submit" class="btn btn-primary">Dodaj</button>
+        <button id="add" type="submit" class="btn btn-primary">Add new site</button>
     </form>
     <hr>
     <div class="table-responsive">
@@ -36,47 +46,42 @@
             {% for site in sites %}
                 <tr style="{% if site.last_status != 200 %}color:red{% endif %}">
                 <td scope="row">{{ forloop.counter }}</td>
-                <td>{{ site }}</td>
+                <td><a href="/details/{{ site.id }}/">{{ site }}</a></td>
                 <td>{{ site.last_status }}</td>
                 <td>{{ site.last_response_time }}</td>
+                <td><a class='delete' id='{{ site.url }}' href='delete/{{ site.id }}/'><i class="fas fa-trash-alt"></i></a>
+                </td>
             {% endfor %}
             </tr>
             </tbody>
         </table>
     </div>
     <!--Table-->
-    {% if messages %}
-        {% for message in messages %}
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $('#exampleModal').modal('show');
-                });
-            </script>
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalCenterTitle">{{ label }}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body alert-{{ message.tags }}">
-                            {{ message }}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
-                        </div>
-                    </div>
+
+    <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="body">You are about to delete {{ sites }}.</p>
+                    <p>Do you want to proceed?</p>
+                    <p class="debug-url"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a id='delete' class="btn btn-danger btn-ok">Delete</a>
                 </div>
             </div>
-        {% endfor %}
-    {% endif %}
+        </div>
+    </div>
     <!-- Modal -->
-    <form action="#" method="get">
-        <input type="submit" class="btn btn-primary" value="Sprawdź teraz" name="mybtn" id="mybtn">
-    </form>
 
+    <form action="#" method="get">
+        <button onclick="waitingDialog.show()" class="btn btn-primary" value="Check all" name="check_all_btn">
+            Check all sites now
+        </button>
+    </form>
 {% endblock %}

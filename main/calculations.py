@@ -1,5 +1,9 @@
 import requests
 from datetime import datetime
+
+from django.core.mail import send_mail
+from django.conf import settings
+
 from .models import SiteToCheck
 
 
@@ -35,7 +39,7 @@ class SiteDownChecker:
                 obj.last_response_time = None
                 obj.last_check = datetime.now()
                 if len(obj.bad_data) > 0:
-                    obj.bad_data += '\n' + str(e)
+                    obj.bad_data += '\n' + str(datetime.now().strftime("%Y/%m/%d-%H:%M:%S")) + ': ' + str(e)
                 else:
                     obj.bad_data += e
                 obj.save()
@@ -50,4 +54,19 @@ class SiteDownChecker:
                 data['response_time'] = None
                 data['last_check'] = datetime.now().strftime("%Y/%m/%d-%H:%M:%S")
                 data['bad_data'] = e
-                return data
+                data['url'] = self.url
+            self.send_email(self.url, e)
+            return data
+
+    def send_email(self, url, error):
+        subject = 'Błędy na stronach'
+        message = f'Na stronie {url} znaleziono błędy: {error}'
+        from_email = settings.EMAIL_ADDRESS
+        to_email = settings.TO_EMAIL
+        send_mail(
+            subject,
+            message,
+            from_email,
+            [to_email],
+            fail_silently=False,
+        )
