@@ -1,39 +1,82 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-{% block content %}
-    <p>To jest aaa</p>
-    <form action='/' method="POST">{% csrf_token %}
-        {{ form.as_p }}
-        {% for k,v in data.items %}
-            <li>{{ k }}: {{ v }}</li>
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap %}
+
+{% block title %} Site checker - main {% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        You are logged as {{ user.username }}
+        <p><a href="{% url 'logout' %}">logout</a></p>
+    {% endif %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
         {% endfor %}
-        <button type="submit">Dodaj</button>
+    {% endif %}
+    <form action='/' method="POST">{% csrf_token %}
+        {{ form|bootstrap }}
+        <button id="add" type="submit" class="btn btn-primary">Add new site</button>
     </form>
     <hr>
-    {% for site in sites %}
-        <li>{{ site }}, status: {{ site.last_status }}, response time: {{ site.last_response_time }}</li>
-    {% endfor %}
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    <div class="table-responsive">
+        <table id="dtBasicExample" class="table table-bordered table-sm" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th class="th-sm">#
+                    <i class="fa float-right" aria-hidden="true"></i>
+                </th>
+                <th class="th-sm">Url
+                    <i class="fa float-right" aria-hidden="true"></i>
+                </th>
+                <th class="th-sm">Last status
+                    <i class="fa float-right" aria-hidden="true"></i>
+                </th>
+                <th class="th-sm">Last Response Time
+                    <i class="fa float-right" aria-hidden="true"></i>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for site in sites %}
+                <tr style="{% if site.last_status != 200 %}color:red{% endif %}">
+                <td scope="row">{{ forloop.counter }}</td>
+                <td><a href="/details/{{ site.id }}/">{{ site }}</a></td>
+                <td>{{ site.last_status }}</td>
+                <td>{{ site.last_response_time }}</td>
+                <td><a class='delete' id='{{ site.url }}' href='delete/{{ site.id }}/'><i class="fas fa-trash-alt"></i></a>
+                </td>
             {% endfor %}
-        </ul>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--Table-->
 
-    {% endif %}
+    <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="body">You are about to delete {{ sites }}.</p>
+                    <p>Do you want to proceed?</p>
+                    <p class="debug-url"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a id='delete' class="btn btn-danger btn-ok">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+
     <form action="#" method="get">
-        <input type="submit" class="btn" value="Sprawdź teraz" name="mybtn" id="mybtn">
+        <button onclick="waitingDialog.show()" class="btn btn-primary" value="Check all" name="check_all_btn">
+            Check all sites now
+        </button>
     </form>
-
-{% endblock content %}
-</body>
-</html>
+{% endblock %}

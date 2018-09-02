@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block title %} Site checker - details {{ url.url }} {% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">
+                    <a href="{{ url.url }}">{{ url.url }}</a>
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Last status <i class="fas fa-plug"></i></h5>
+                        <p class="status"
+                           style="color: {% if url.last_status == 200 %}green{% else %}red{% endif %}">{{ url.last_status }}</p>
+                        <form action="" method="get">
+                            <button onclick="waitingDialog.show()" class="btn btn-primary" value="Check"
+                                    name="check_btn">
+                                Check now
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Last check <i class="fas fa-clock"></i></h5>
+                        <p class="status">{{ url.last_check }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if url.bad_data %}
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Error
+                            </th>
+                        </tr>
+                        </thead>
+                        {% for i in  bad_data %}
+                            <tbody>
+                            <tr>
+                                <td>
+                                    {{ i|stringformat:".16s" }}
+                                </td>
+                                <td>
+                                    {{ i|slice:"17:" }}
+                                </td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -9,7 +9,10 @@ class WwwAddressForm(forms.Form):
 class SiteToCheckForm(forms.ModelForm):
     class Meta:
         model = SiteToCheck
-        fields = ['url',]
+        fields = ['url', ]
         labels = {
-            "url": "Adres url do dodania",
+            "url": "",
+        }
+        widgets = {
+            'url': forms.TextInput(attrs={'placeholder': 'Add new url here'}),
         }
