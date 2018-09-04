@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from .forms import SiteToCheckForm
 from .models import SiteToCheck
-from .calculations import SiteDownChecker, my_cron_job
+from .calculations import SiteDownChecker
 
 
 def login_view(request):
@@ -14,7 +14,6 @@ def login_view(request):
     if user is not None:
         login(request, user)
         # Redirect to a success page.
-
         render(request, 'login.html')
     else:
         # Return an 'invalid login' error message.
@@ -39,7 +38,6 @@ def index(request):
     else:
         form = SiteToCheckForm
         if request.GET.get('check_all_btn'):
-            # my_cron_job()
             for url in sites:
                 SiteDownChecker(url).status()
             return redirect('/')
@@ -52,7 +50,6 @@ def index(request):
 def url_details(request, id):
     url = get_object_or_404(SiteToCheck, pk=id)
     bad_data = url.bad_data.splitlines()
-    print(bad_data)
     if request.GET.get('check_btn'):
         url = SiteDownChecker(url).status()
         return render(request, 'details.html', {'url': url, 'bad_data': bad_data})
@@ -63,7 +60,6 @@ def url_details(request, id):
 @login_required
 def url_delete(request, id):
     url = get_object_or_404(SiteToCheck, pk=id)
-
     if request.method == 'GET':
         url.delete()
         return redirect('/')
