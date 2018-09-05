@@ -39,7 +39,10 @@ class SiteDownChecker:
     def status(self):
         data = dict()
         try:
-            r = requests.get(self.url)
+            r = requests.get(self.url, headers={
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) \
+                AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 \
+                Safari/537.36'})
             if SiteToCheck.objects.filter(url=self.url).exists():
                 obj = SiteToCheck.objects.get(url=self.url)
                 obj.last_status = r.status_code
