@@ -123,3 +123,4 @@ main/migrations/0002_auto_20180819_1101.py
 main/migrations/0003_auto_20180819_2052.py
 main/migrations/0004_sitetocheck_last_check.py
 /site-down-checker/settings_secret.py
+*.pyc
