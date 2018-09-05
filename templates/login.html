@@ -4,11 +4,6 @@
 {% block title %} Site checker - login {% endblock %}
 
 {% block body %}
-    <div class="h1-title">
-        <h1 class="display-1">Url up-down checker</h1>
-        <p>by <a href="#">jundymek</a></p>
-        <p>visit me on <a href="https://github.com/jundymek"><i class="fab fa-github fa-2x"></i></a></p>
-    </div>
     <div class="center_login "><form method="POST">{% csrf_token %}
         {{ form|bootstrap }}
         <button type="submit" class="btn btn-primary">Login</button>
