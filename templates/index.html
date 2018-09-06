@@ -44,7 +44,9 @@
                 <td><a href="/details/{{ site.id }}/">{{ site }}</a></td>
                 <td>{{ site.last_status }}</td>
                 <td>{{ site.last_response_time }}</td>
-                <td><a class='delete' id='{{ site.url }}' href='delete/{{ site.id }}/'><i class="fas fa-trash-alt"></i></a>
+                <td>
+                    <a id='{{ site.url }}' href='refresh/{{ site.id }}/'><i class="fas fa-sync-alt"></i></a>
+                    <a class='delete' id='{{ site.url }}' href='delete/{{ site.id }}/'><i class="fas fa-trash-alt"></i></a>
                 </td>
             {% endfor %}
             </tr>

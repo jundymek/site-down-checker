@@ -43,12 +43,12 @@ def index(request):
             return redirect('/')
 
     return render(request, 'index.html', {'form': form, 'sites': sites})
+    # TODO add refresh buttn next to each url
 
 
-# TODO Sort in descending order by date in template
 @login_required
-def url_details(request, id):
-    url = get_object_or_404(SiteToCheck, pk=id)
+def url_details(request, pk):
+    url = get_object_or_404(SiteToCheck, pk=pk)
     bad_data = url.bad_data.splitlines()
     if request.GET.get('check_btn'):
         url = SiteDownChecker(url).status()
@@ -58,9 +58,20 @@ def url_details(request, id):
 
 
 @login_required
-def url_delete(request, id):
-    url = get_object_or_404(SiteToCheck, pk=id)
+def url_delete(request, pk):
+    url = get_object_or_404(SiteToCheck, pk=pk)
     if request.method == 'GET':
         url.delete()
+        return redirect('/')
+    return render(request, 'index.html')
+
+
+@login_required
+def url_refresh(request, pk):
+    url = get_object_or_404(SiteToCheck, pk=pk)
+    if request.method == 'GET':
+        data = SiteDownChecker(url.url).status()
+        success_message_text = f"Status: {data['last_status']}, Response time: {data['last_response_time']}"
+        messages.success(request, success_message_text)
         return redirect('/')
     return render(request, 'index.html')
