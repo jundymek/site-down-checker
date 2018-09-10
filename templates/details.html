@@ -15,12 +15,13 @@
         <div class="row">
             <div class="col-md-12">
                 <h3 class="text-center">
-                    <a href="{{ url.url }}">{{ url.url }}</a>
+                    Details for: <a href="{{ url.url }}">{{ url.url }}</a>
                 </h3>
             </div>
         </div>
+        <br>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Last status <i class="fas fa-plug"></i></h5>
@@ -35,7 +36,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Last check <i class="fas fa-clock"></i></h5>
@@ -43,11 +44,21 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Last response time <i class="fas fa-tachometer"></i></h5>
+                        <p class="status">{{ url.last_response_time }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        {% if url.bad_data %}
+        {% if bad_data %}
+            <br>
             <div class="row">
                 <div class="col-md-12">
-                    <table  data-toggle="table" data-sort-name="date" data-sort-order="desc" data-pagination="true" data-query-params="queryParams">
+                    <table data-toggle="table" data-sort-name="date" data-sort-order="desc" data-pagination="true"
+                           data-query-params="queryParams">
                         <thead>
                         <tr>
                             <th data-field="date" data-sortable="true">

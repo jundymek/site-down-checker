@@ -1,6 +1,6 @@
 $(document).ready(function ($) {
 
-    $('.alert').delay(3000).fadeOut();
+    $('.alert').delay(5000).fadeOut();
     $('.delete').on('click', function (e) {
         e.preventDefault();
         var url = ($(this).attr('href'));

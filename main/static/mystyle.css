@@ -25,9 +25,9 @@ a:hover {
 
 .status {
     text-align: center;
-    font-size: 36px;
+    font-size: 26px;
 }
 
 .card-body {
-    min-height: 13rem;
+    min-height: 14rem;
 }

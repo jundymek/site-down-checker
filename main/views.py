@@ -32,7 +32,9 @@ def index(request):
                 messages.error(request, 'The page already exists in database')
             else:
                 data = SiteDownChecker(cd['url']).status()
-                success_message_text = f"The page hes been added. \n\nStatus: {data['last_status']}, Response time: {data['last_response_time']}"
+                print(data)
+                success_message_text = f"The page hes been added. \n\nStatus: {data['last_status']}, Response time: \
+                {data['last_response_time']}"
                 messages.success(request, success_message_text)
         return redirect('/')
     else:
@@ -43,18 +45,19 @@ def index(request):
             return redirect('/')
 
     return render(request, 'index.html', {'form': form, 'sites': sites})
-    # TODO add refresh buttn next to each url
 
 
 @login_required
 def url_details(request, pk):
     url = get_object_or_404(SiteToCheck, pk=pk)
-    bad_data = url.bad_data.splitlines()
     if request.GET.get('check_btn'):
-        url = SiteDownChecker(url).status()
+        SiteDownChecker(url).status()
+        refreshed_url = get_object_or_404(SiteToCheck, pk=pk)
+        bad_data = refreshed_url.bad_data.splitlines()
         return render(request, 'details.html', {'url': url, 'bad_data': bad_data})
-
-    return render(request, 'details.html', {'url': url, 'bad_data': bad_data})
+    else:
+        bad_data = url.bad_data.splitlines()
+        return render(request, 'details.html', {'url': url, 'bad_data': bad_data})
 
 
 @login_required
@@ -71,7 +74,7 @@ def url_refresh(request, pk):
     url = get_object_or_404(SiteToCheck, pk=pk)
     if request.method == 'GET':
         data = SiteDownChecker(url.url).status()
-        success_message_text = f"Status: {data['last_status']}, Response time: {data['last_response_time']}"
+        success_message_text = f"{url} Status: {data['last_status']}, Response time: {data['last_response_time']}"
         messages.success(request, success_message_text)
         return redirect('/')
     return render(request, 'index.html')
