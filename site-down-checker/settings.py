@@ -36,7 +36,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'bootstrapform',
-    'django_crontab'
+    'django_crontab',
+    'django_extensions',
+    'constance',
+    'constance.backends.database',
 ]
 
 MIDDLEWARE = [
@@ -59,6 +62,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'constance.context_processors.config',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -132,6 +136,12 @@ CRONJOBS = [
     ('0 8 * * *', 'main.calculations.my_cron_job')
 ]
 
+CONSTANCE_CONFIG = {
+    'PROXY': (True, 'Using proxy', bool),
+}
+
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+
 # Django secret_settings.py
 # ALLOWED_HOSTS = ['']
 # SECRET_KEY = ''
@@ -142,4 +152,3 @@ CRONJOBS = [
 # EMAIL_ADDRESS = ''
 # EMAIL_HOST_PASSWORD = ''
 # TO_EMAIL = ''
-

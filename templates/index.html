@@ -3,7 +3,10 @@
 {% load bootstrap %}
 
 {% block title %} Site checker - main {% endblock %}
-
+{% block additional_imports %}
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+{% endblock %}
 {% block body %}
     {% if user.is_authenticated %}
         You are logged as {{ user.username }}
@@ -14,6 +17,14 @@
             <div class="alert alert-{{ message.tags }}">{{ message }}</div>
         {% endfor %}
     {% endif %}
+    <div class="d-flex">
+        <div class="ml-auto p-2">Use proxy?
+            <input type="checkbox" {% if config.PROXY %}checked{% endif %} data-toggle="toggle" name="value"
+                   data-on="Yes" data-off="No" id="config.PROXY"
+                   class="config_toggle">
+        </div><i class="far fa-question-circle" data-toggle="tooltip" data-placement="top"
+                                              title="Use proxy when url is not responding? (additional check through another proxy)"></i>
+    </div>
     <form action='/' method="POST">{% csrf_token %}
         {{ form|bootstrap }}
         <button id="add" type="submit" class="btn btn-primary">Add new site</button>

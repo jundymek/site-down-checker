@@ -1,9 +1,11 @@
 import requests
 from datetime import datetime
+from constance import config
+
+from proxy_requests.proxy_requests import ProxyRequests
 
 from django.core.mail import send_mail
 from django.conf import settings
-from proxy_requests.proxy_requests import ProxyRequests
 
 from .models import SiteToCheck
 
@@ -52,8 +54,8 @@ class SiteDownChecker:
             else:
                 return self.create_new_url_success(proxy, r)
         except Exception as e:
-            if not proxy:
-                self.error = str(e)
+            self.error = str(e)
+            if not proxy and config.PROXY:
                 return self.status(proxy=True)
             if SiteToCheck.objects.filter(url=self.url).exists():
                 return self.modify_url_exception(e)
