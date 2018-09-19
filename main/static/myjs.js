@@ -28,7 +28,7 @@ $(document).ready(function ($) {
             }
         });
         var value = $(this).prop('checked')
-        var id = $(this).attr('id')
+        var id = 'proxy'
         var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
         $.ajax({
             url: '/modify_settings/',
@@ -36,6 +36,28 @@ $(document).ready(function ($) {
             data: {'value': value, 'id': id, csrfmiddlewaretoken: csrftoken},
             dataType: 'json'
         })
+    })
+
+    $('#change_email').click(function () {
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        var value = $('#new_email').val()
+        var id = 'email'
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+        if (value) {
+            $.ajax({
+            url: '/modify_settings/',
+            type: "POST",
+            data: {'value': value,'id': id, csrfmiddlewaretoken: csrftoken},
+            dataType: 'json'
+        })
+        }
+
     })
 
 });

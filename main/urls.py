@@ -9,6 +9,6 @@ urlpatterns = [
     path('refresh/<int:pk>/', url_refresh, name='refresh'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('modify_settings/', modify_settings, name='modify_settings')
+    path('modify_settings/', modify_settings, name='modify_settings'),
 
 ]
