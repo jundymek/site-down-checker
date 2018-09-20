@@ -117,10 +117,8 @@ site-down-checker/__pycache__/
 db.sqlite3
 main/__pycache__/
 main/migrations/__pycache__/
+__pycache__/
 /.env_win/
-main/migrations/0001_initial.py
-main/migrations/0002_auto_20180819_1101.py
-main/migrations/0003_auto_20180819_2052.py
-main/migrations/0004_sitetocheck_last_check.py
+main/migrations/
 /site-down-checker/settings_secret.py
 .pyc

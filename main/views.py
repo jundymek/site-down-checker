@@ -70,6 +70,8 @@ def url_delete(request, pk):
     url = get_object_or_404(SiteToCheck, pk=pk, user=request.user)
     if request.method == 'GET':
         url.delete()
+        message = f'{url.url} was deleted'
+        messages.success(request, message)
         return redirect('/')
     return render(request, 'index.html')
 
@@ -88,7 +90,7 @@ def url_refresh(request, pk):
 def modify_settings(request):
     form = SiteToCheckForm
     sites = SiteToCheck.objects.filter(user=request.user)
-    if request.is_ajax():
+    if request.method == 'POST':
         response_json = request.POST
         response_json = json.dumps(response_json)
         data = json.loads(response_json)

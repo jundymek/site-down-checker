@@ -1,7 +1,6 @@
 import requests
 from datetime import datetime
 from constance import config
-
 from proxy_requests.proxy_requests import ProxyRequests
 
 from django.core.mail import send_mail
