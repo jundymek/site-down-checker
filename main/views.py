@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 
-from .forms import SiteToCheckForm
+from .forms import SiteToCheckForm, MyUserCreationForm
 from .models import SiteToCheck
 from .calculations import SiteDownChecker
 
@@ -22,6 +22,18 @@ def login_view(request):
     else:
         # Return an 'invalid login' error message.
         render(request, 'login.html')
+
+
+def registration_view(request):
+    if request.method == 'POST':
+        form = MyUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('index')
+    else:
+        form = MyUserCreationForm()
+    return render(request, 'register.html', {'form': form})
 
 
 def index(request):
@@ -40,7 +52,9 @@ def index(request):
                 success_message_text = f"The page hes been added. \n\nStatus: {data['last_status']}, Response time: \
                 {data['last_response_time']}"
                 messages.success(request, success_message_text)
-        return redirect('/')
+            return redirect('/')
+        else:
+            messages.error(request, 'Please enter the correct URL')
     else:
         form = SiteToCheckForm
         if request.GET.get('check_all_btn'):

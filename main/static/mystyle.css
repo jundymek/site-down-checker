@@ -8,10 +8,16 @@ body {
     padding-bottom: 2vh;
 }
 
+
+
 a {
-    /*text-decoration: underline;*/
-    color: #696969;
+    text-decoration: underline;
+    color: #1A5885;
     font-weight: 600;
+}
+
+a.title {
+    text-decoration: none;
 }
 
 a:hover {

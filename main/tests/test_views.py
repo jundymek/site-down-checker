@@ -1,9 +1,9 @@
-from django.test import TestCase, TransactionTestCase
+from django.test import TransactionTestCase
 from django.contrib.auth.models import User
-from .models import SiteToCheck
+from main.models import SiteToCheck
 
 
-class BasicTests(TransactionTestCase):
+class BasicViewsTests(TransactionTestCase):
     def setUp(self):
         self.user = User.objects.create(username="test", email="test@test.pl")
         self.user.set_password("test")
@@ -20,13 +20,6 @@ class BasicTests(TransactionTestCase):
     def test_details_page_status_code(self):
         response = self.client.get(f'/details/{self.site_id}/')
         self.assertEquals(response.status_code, 200)
-
-    def test_delete_page(self):
-        response = self.client.get(f'/delete/{self.site_id}/', follow=True)
-        message = list(response.context.get('messages'))[0]
-        self.assertEquals(response.status_code, 200)
-        self.assertEqual(message.tags, "success")
-        self.assertTrue("was deleted" in message.message)
 
     def test_modify_email(self):
         value = 'aass@dsdsad.pl'
