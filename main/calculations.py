@@ -32,6 +32,8 @@ def my_cron_job():
         for site in sites:
             if 'bad_data' in SiteDownChecker(site, user).status():
                 output += f'{site} - ERROR\n'
+            elif site.last_status != 200:
+                output += f'{site} - last status: {site.last_status}'
         if len(output) > 0:
             send_email(output, user.email)
 
