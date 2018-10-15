@@ -50,7 +50,6 @@ class SiteDownChecker:
         try:
             if proxy:
                 r = ProxyRequests(self.url)
-                # r.set_headers({'User-Agent': 'Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1)'})
             else:
                 r = requests.get(self.url, headers={
                     'User-Agent': 'Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1)'})
@@ -89,9 +88,8 @@ class SiteDownChecker:
         obj.last_response_time = None
         obj.last_check = datetime.now().strftime("%Y-%m-%d %H:%M")
         if len(obj.bad_data) > 0:
-            obj.bad_data += '\n' + str(datetime.now().strftime("%Y-%m-%d %H:%M")) + ': ' + self.error
-        else:
-            obj.bad_data += str(datetime.now().strftime("%Y-%m-%d %H:%M")) + ': ' + self.error
+            obj.bad_data += '\n'
+        obj.bad_data += str(datetime.now().strftime("%Y-%m-%d %H:%M")) + ': ' + self.error
         obj.save()
         data['bad_data'] = e
         data['last_status'] = None
@@ -102,38 +100,30 @@ class SiteDownChecker:
 
     def create_new_url_success(self, proxy, r):
         data = dict()
-        if not proxy:
-            SiteToCheck.objects.create(url=self.url,
-                                       user=self.user,
-                                       last_status=r.status_code,
-                                       last_response_time=r.elapsed.total_seconds(),
-                                       last_check=datetime.now().strftime("%Y-%m-%d %H:%M"))
-            data['last_status'] = r.status_code
-            data['last_response_time'] = r.elapsed.total_seconds()
-        else:
-            SiteToCheck.objects.create(url=self.url,
-                                       user=self.user,
-                                       last_status=r.get_status_code(),
-                                       last_response_time=self.time,
-                                       last_check=datetime.now().strftime("%Y-%m-%d %H:%M"))
-            data['last_status'] = r.get_status_code()
-            data['last_response_time'] = self.time
+        data['last_status'] = r.status_code if not proxy else r.get_status_code()
+        data['last_response_time'] = r.elapsed.total_seconds() if not proxy else self.time
         data['last_check'] = datetime.now().strftime("%Y-%m-%d %H:%M")
+        SiteToCheck.objects.create(url=self.url,
+                                   user=self.user,
+                                   last_status=data['last_status'],
+                                   last_response_time=data['last_response_time'],
+                                   last_check=data['last_check'])
+
         return data
 
     def modify_url_success(self, proxy, r):
         data = dict()
+        data['last_status'] = r.status_code if not proxy else r.get_status_code()
+        data['last_response_time'] = r.elapsed.total_seconds() if not proxy else self.time
         obj = SiteToCheck.objects.get(url=self.url, user=self.user)
-        if not proxy:
-            obj.last_status = r.status_code
-            obj.last_response_time = r.elapsed.total_seconds()
-            data['last_status'] = r.status_code
-            data['last_response_time'] = r.elapsed.total_seconds()
-        else:
-            obj.last_status = r.get_status_code()
-            obj.last_response_time = self.time
-            data['last_status'] = r.get_status_code()
-            data['last_response_time'] = self.time
+        obj.last_status = data['last_status']
+        obj.last_response_time = data['last_response_time']
+        if data['last_status'] != 200:
+            if len(obj.bad_data) > 0:
+                obj.bad_data += '\n'
+            obj.bad_data += str(
+                datetime.now().strftime(
+                    "%Y-%m-%d %H:%M")) + f": last status different than 200: {data['last_status']}"
         obj.last_check = datetime.now().strftime("%Y-%m-%d %H:%M")
         obj.save()
         data['last_check'] = datetime.now().strftime("%Y-%m-%d %H:%M")

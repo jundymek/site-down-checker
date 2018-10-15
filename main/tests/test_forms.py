@@ -42,6 +42,13 @@ class UrlAddFormTest(TestCase):
         self.assertTrue(form.is_valid())
         self.assertEqual(new_site.url, form_data['url'])
 
+    def test_success_add_status_not_200(self):
+        form_data = {'url': 'http://www.dietarozdzielna.pl'}
+        form = SiteToCheckForm(form_data)
+        new_site = form.save()
+        self.assertTrue(form.is_valid())
+        self.assertFalse(new_site.last_status, 200)
+
 
 class LoginTest(TestCase):
 
