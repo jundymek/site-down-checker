@@ -37,27 +37,5 @@ $(document).ready(function ($) {
             dataType: 'json'
         })
     })
+})
 
-    $('#change_email').click(function () {
-        $.ajaxSetup({
-            beforeSend: function (xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-            }
-        });
-        var value = $('#new_email').val()
-        var id = 'email'
-        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-        if (value) {
-            $.ajax({
-            url: '/modify_settings/',
-            type: "POST",
-            data: {'value': value,'id': id, csrfmiddlewaretoken: csrftoken},
-            dataType: 'json'
-        })
-        }
-
-    })
-
-});

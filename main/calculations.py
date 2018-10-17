@@ -1,4 +1,5 @@
 import requests
+import json
 from datetime import datetime
 from constance import config
 from proxy_requests.proxy_requests import ProxyRequests
@@ -6,6 +7,7 @@ from proxy_requests.proxy_requests import ProxyRequests
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 from .models import SiteToCheck
 
@@ -36,6 +38,21 @@ def my_cron_job():
                 output += f'{site} - last status: {site.last_status}'
         if len(output) > 0:
             send_email(output, user.email)
+
+
+def modify_email(request):
+    response_json = json.dumps(request.POST)
+    data = json.loads(response_json)
+    user = request.user
+    if user.email == data['email']:
+        error_message = 'It is your existing email address'
+        messages.error(request, error_message)
+    else:
+        user.email = data['email']
+        user.save()
+        success_message = f'You changed your email. Every messages will be send to \
+                    {request.user.email} until now.'
+        messages.success(request, success_message)
 
 
 class SiteDownChecker:

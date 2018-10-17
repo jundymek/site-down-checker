@@ -11,27 +11,23 @@ class BasicViewsTests(TransactionTestCase):
         self.client.force_login(self.user)
         self.new_site = SiteToCheck.objects.create(url='http://www.test.html', user=self.user.username)
         self.new_site.save()
-        self.site_id = self.new_site.id
 
     def test_home_page_status_code(self):
         response = self.client.get('/')
         self.assertEquals(response.status_code, 200)
 
     def test_details_page_status_code(self):
-        response = self.client.get(f'/details/{self.site_id}/')
+        response = self.client.get(f'/details/{self.new_site.id}/')
         self.assertEquals(response.status_code, 200)
-
-    def test_modify_email(self):
-        value = 'aass@dsdsad.pl'
-        response = self.client.post('/modify_settings/', {'id': 'email', 'value': value},
-                                    follow=True)
-        message = list(response.context.get('messages'))[0]
-        self.assertEquals(response.status_code, 200)
-        self.assertEqual(message.tags, "success")
-        self.assertTrue("You changed your email" in message.message)
 
     def test_refresh_page(self):
-        response = self.client.get(f'/refresh/{self.site_id}/', follow=True)
-        response1 = self.client.get(f'/refresh/{self.site_id}/', follow=True)
+        response = self.client.get(f'/refresh/{self.new_site.id}/', follow=True)
+        response1 = self.client.get(f'/refresh/{self.new_site.id}/', follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertNotEqual(response, response1)
+
+    def test_modify_email(self):
+        response = self.client.post('/', {'email': "user@mp.com"}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        message = list(response.context.get('messages'))[0]
+        self.assertEqual(message.tags, "success")
