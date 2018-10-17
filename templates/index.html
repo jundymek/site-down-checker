@@ -19,12 +19,13 @@
     {% endif %}
     <div class="form-row">
         <div class="form-group ml-auto col-sm-3">
-            <form action='#' method="POST">{% csrf_token %}
+            <form action='/' method="POST">{% csrf_token %}
                 <div class="input-group mb-2 mr-sm-2">
                     <div class="input-group-prepend">
                         <div class="input-group-text">@</div>
                     </div>
-                    <input type="email" required class="form-control" id="new_email" placeholder={{ user.email }}>
+                    <input type="email" required class="form-control" name="email" id="new_email"
+                           placeholder={{ user.email }}>
                     <div class="pl-2">
                         <button id="change_email" type="submit" class="btn btn-primary">Change</button>
                     </div>
@@ -46,10 +47,9 @@
             </div>
         </div>
     </div>
-
     <form action='/' method="POST">{% csrf_token %}
         {{ form|bootstrap }}
-        <button id="add" type="submit" class="btn btn-primary">Add new site</button>
+        <button id="add" type="submit" name="add_url_submit" class="btn btn-primary">Add new site</button>
     </form>
     <hr>
     <div class="table-responsive">
@@ -119,3 +119,4 @@
         </button>
     </form>
 {% endblock %}
+

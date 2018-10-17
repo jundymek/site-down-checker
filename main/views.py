@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import SiteToCheckForm, MyUserCreationForm
 from .models import SiteToCheck
-from .calculations import SiteDownChecker
+from .calculations import SiteDownChecker, modify_email
 
 
 def login_view(request):
@@ -41,7 +41,7 @@ def index(request):
         return redirect('login/')
     user = request.user
     sites = SiteToCheck.objects.filter(user=user)
-    if request.method == 'POST':
+    if request.method == 'POST' and 'add_url_submit' in request.POST:
         form = SiteToCheckForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
@@ -55,6 +55,9 @@ def index(request):
             return redirect('/')
         else:
             messages.error(request, 'Please enter the correct URL')
+    elif request.method == 'POST' and 'email' in request.POST:
+        modify_email(request)
+        return redirect('/')
     else:
         form = SiteToCheckForm
         if request.GET.get('check_all_btn'):
@@ -102,8 +105,6 @@ def url_refresh(request, pk):
 
 
 def modify_settings(request):
-    form = SiteToCheckForm
-    sites = SiteToCheck.objects.filter(user=request.user)
     if request.method == 'POST':
         response_json = request.POST
         response_json = json.dumps(response_json)
@@ -113,16 +114,4 @@ def modify_settings(request):
                 config.PROXY = False
             else:
                 config.PROXY = True
-        elif data['id'] == 'email':
-            user = request.user
-            if user.email == data['value']:
-                error_message = f'It is your existing email address'
-                messages.error(request, error_message)
-            else:
-                user.email = data['value']
-                user.save()
-                success_message = f'You changed your email. Every messages will be send to \
-                {request.user.email} until now.'
-                messages.success(request, success_message)
-            return redirect('/')
-    return render(request, 'index.html', {'form': form, 'sites': sites})
+    return redirect('/')

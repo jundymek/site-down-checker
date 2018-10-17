@@ -27,14 +27,6 @@ class UrlAddFormTest(TestCase):
         form = SiteToCheckForm(data=form_data)
         self.assertTrue(form.is_valid())
 
-    def test_form_page_already_exist(self):
-        SiteToCheck.objects.create(url='http://www.onet.pl', user=self.user.username)
-        form_data = {'url': 'http://www.onet.pl'}
-        response = self.client.post('/', form_data, follow=True)
-        message = list(response.context.get('messages'))[0]
-        self.assertEqual(message.tags, "danger")
-        self.assertTrue("The page already exists in database" in message.message)
-
     def test_success_add(self):
         form_data = {'url': 'http://www.onet.pl'}
         form = SiteToCheckForm(form_data)
