@@ -1,9 +1,13 @@
 from django.urls import path
-from .views import index, url_details, url_delete, url_refresh, modify_settings, registration_view
+from .views import IndexView, url_details, url_delete, url_refresh, modify_settings, registration_view, \
+    AddSiteToCheckView, check_all, update_email
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', IndexView.as_view(), name='index'),
+    path('add/', AddSiteToCheckView.as_view(), name='add'),
+    path('update_email/', update_email, name='update_email'),
+    path('check_all/', check_all, name='check_all'),
     path('details/<int:pk>/', url_details, name='details'),
     path('delete/<int:pk>/', url_delete, name='delete'),
     path('refresh/<int:pk>/', url_refresh, name='refresh'),

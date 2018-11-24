@@ -19,7 +19,7 @@
     {% endif %}
     <div class="form-row">
         <div class="form-group ml-auto col-sm-3">
-            <form action='/' method="POST">{% csrf_token %}
+            <form action='{% url 'update_email' %}' method="POST">{% csrf_token %}
                 <div class="input-group mb-2 mr-sm-2">
                     <div class="input-group-prepend">
                         <div class="input-group-text">@</div>
@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-    <form action='/' method="POST">{% csrf_token %}
+    <form action='{% url 'add' %}' method="POST">{% csrf_token %}
         {{ form|bootstrap }}
         <button id="add" type="submit" name="add_url_submit" class="btn btn-primary">Add new site</button>
     </form>
@@ -113,7 +113,7 @@
     </div>
     <!-- Modal -->
 
-    <form action="#" method="get">
+    <form action="{% url 'check_all' %}" method="get">
         <button onclick="waitingDialog.show()" class="btn btn-primary" value="Check all" name="check_all_btn">
             Check all sites now
         </button>
