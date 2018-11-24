@@ -32,7 +32,7 @@
                         <h5 class="card-title">Last status <i class="fas fa-plug"></i></h5>
                         <p class="status"
                            style="color: {% if url.last_status == 200 %}green{% else %}red{% endif %}">{{ url.last_status }}</p>
-                        <form action="" method="get">
+                        <form action="{% url 'refresh' url.pk %}" method="get">
                             <button onclick="waitingDialog.show()" class="btn btn-primary" value="Check"
                                     name="check_btn">
                                 Check now
@@ -58,7 +58,7 @@
                 </div>
             </div>
         </div>
-        {% if bad_data %}
+        {% if url.bad_data %}
             <br>
             <div class="row">
                 <div class="col-md-12">
@@ -74,7 +74,7 @@
                             </th>
                         </tr>
                         </thead>
-                        {% for i in  bad_data %}
+                        {% for i in  url.bad_data.splitlines %}
                             <tr>
                                 <td>
                                     {{ i|stringformat:".16s" }}

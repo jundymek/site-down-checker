@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
 
 from .forms import SiteToCheckForm, MyUserCreationForm
@@ -73,25 +73,16 @@ class AddSiteToCheckView(FormView):
         return redirect('/')
 
 
+class SiteDetail(DetailView):
+    model = SiteToCheck
+    template_name = 'details.html'
+    context_object_name = 'url'
+
+
 @login_required
 def update_email(request):
     modify_email(request)
     return redirect('/')
-
-
-@login_required
-def url_details(request, pk):
-    url = get_object_or_404(SiteToCheck, pk=pk, user=request.user)
-    if request.GET.get('check_btn'):
-        data = SiteDownChecker(url, user=request.user).status()
-        success_message_text = f"{url} Status: {data['last_status']}, Response time: {data['last_response_time']}"
-        messages.success(request, success_message_text)
-        refreshed_url = get_object_or_404(SiteToCheck, pk=pk, user=request.user)
-        bad_data = refreshed_url.bad_data.splitlines()
-        return render(request, 'details.html', {'url': url, 'bad_data': bad_data})
-    else:
-        bad_data = url.bad_data.splitlines()
-        return render(request, 'details.html', {'url': url, 'bad_data': bad_data})
 
 
 @login_required
@@ -112,7 +103,7 @@ def url_refresh(request, pk):
         data = SiteDownChecker(url.url, user=request.user).status()
         success_message_text = f"{url} Status: {data['last_status']}, Response time: {data['last_response_time']}"
         messages.success(request, success_message_text)
-        return redirect('/')
+        return redirect(f'/details/{pk}')
     return render(request, 'index.html')
 
 
