@@ -1,6 +1,5 @@
 import json
 from constance import config
-from django.http import HttpResponseRedirect
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
