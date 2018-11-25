@@ -95,6 +95,20 @@ def update_email(request):
     return redirect('/')
 
 
+<<<<<<< HEAD
+=======
+# @login_required
+# def url_delete(request, pk):
+#     url = get_object_or_404(SiteToCheck, pk=pk, user=request.user)
+#     if request.method == 'GET':
+#         url.delete()
+#         message = f'{url.url} was deleted'
+#         messages.success(request, message)
+#         return redirect('/')
+#     return render(request, 'index.html')
+
+
+>>>>>>> f7e49dd2f92f352a601c61b9dff99415664dea03
 @login_required
 def url_refresh(request, pk):
     url = get_object_or_404(SiteToCheck, pk=pk, user=request.user)
