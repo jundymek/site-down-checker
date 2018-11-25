@@ -83,7 +83,7 @@
                 <td>{{ site.last_check }}</td>
                 <td class="text-center">
                     <a id='{{ site.url }}' href='refresh/{{ site.id }}/'><i class="fas fa-sync-alt"></i></a>
-                    <a class='delete' id='{{ site.url }}' href='delete/{{ site.id }}/'><i class="fas fa-trash-alt"></i></a>
+                    <a class='delete' id='{{ site.url }}' href='{% url 'delete' site.pk %}'><i class="fas fa-trash-alt"></i></a>
                 </td>
             {% endfor %}
             </tr>

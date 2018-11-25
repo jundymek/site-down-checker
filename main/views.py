@@ -1,12 +1,14 @@
 import json
 from constance import config
+from django.http import HttpResponseRedirect
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import FormView, CreateView
+from django.views.generic.edit import FormView, CreateView, DeleteView
 
 from .forms import SiteToCheckForm, MyUserCreationForm
 from .models import SiteToCheck
@@ -71,10 +73,20 @@ class AddSiteToCheckView(FormView):
         return redirect('/')
 
 
-class SiteDetail(DetailView):
+class SiteDetailView(DetailView):
     model = SiteToCheck
     template_name = 'details.html'
     context_object_name = 'url'
+
+
+class SiteDeleteView(DeleteView):
+    model = SiteToCheck
+    success_url = reverse_lazy('index')
+
+    def get(self, *args, **kwargs):
+        message = f'{self.get_object().url} was deleted'
+        messages.success(self.request, message)
+        return self.post(*args, **kwargs)
 
 
 @login_required
@@ -83,15 +95,15 @@ def update_email(request):
     return redirect('/')
 
 
-@login_required
-def url_delete(request, pk):
-    url = get_object_or_404(SiteToCheck, pk=pk, user=request.user)
-    if request.method == 'GET':
-        url.delete()
-        message = f'{url.url} was deleted'
-        messages.success(request, message)
-        return redirect('/')
-    return render(request, 'index.html')
+# @login_required
+# def url_delete(request, pk):
+#     url = get_object_or_404(SiteToCheck, pk=pk, user=request.user)
+#     if request.method == 'GET':
+#         url.delete()
+#         message = f'{url.url} was deleted'
+#         messages.success(request, message)
+#         return redirect('/')
+#     return render(request, 'index.html')
 
 
 @login_required
