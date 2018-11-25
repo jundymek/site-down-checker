@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, CreateView
 
 from .forms import SiteToCheckForm, MyUserCreationForm
 from .models import SiteToCheck
@@ -26,16 +26,14 @@ def login_view(request):
         render(request, 'login.html')
 
 
-def registration_view(request):
-    if request.method == 'POST':
-        form = MyUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('index')
-    else:
-        form = MyUserCreationForm()
-    return render(request, 'register.html', {'form': form})
+class CreateNewUserView(CreateView):
+    template_name = 'register.html'
+    form_class = MyUserCreationForm
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('index')
 
 
 class IndexView(ListView):
