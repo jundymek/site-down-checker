@@ -1,18 +1,33 @@
 import json
 from constance import config
 
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import FormView, CreateView, DeleteView
 
 from .forms import SiteToCheckForm, MyUserCreationForm
 from .models import SiteToCheck
 from .calculations import SiteDownChecker, modify_email
 
+
+# ---------Custom error views----------- #
+class Custom400Handler(TemplateView):
+    template_name = '400.html'
+
+
+class Custom404Handler(TemplateView):
+    template_name = '404.html'
+
+
+class Custom500Handler(TemplateView):
+    template_name = '404.html'
+
+
+# ------------- End -------------------- #
 
 def login_view(request):
     username = request.POST['username']
@@ -47,7 +62,7 @@ class IndexView(ListView):
         return context
 
     def get_queryset(self):
-        return SiteToCheck.objects.filter(user=self.request.user)
+        return SiteToCheck.objects.filter(user_name=self.request.user)
 
 
 class AddSiteToCheckView(FormView):
@@ -58,10 +73,10 @@ class AddSiteToCheckView(FormView):
 
     def form_valid(self, form):
         cd = form.cleaned_data
-        if SiteToCheck.objects.filter(url=cd['url'], user=self.request.user).exists():
+        if SiteToCheck.objects.filter(url=cd['url'], user_name=self.request.user).exists():
             messages.error(self.request, 'The page already exists in database')
         else:
-            data = SiteDownChecker(cd['url'], user=self.request.user).status()
+            data = SiteDownChecker(cd['url'], user_name=self.request.user).status()
             success_message_text = f"The page hes been added. \n\nStatus: {data['last_status']}, Response time: \
             {data['last_response_time']}"
             messages.success(self.request, success_message_text)
@@ -88,6 +103,17 @@ class SiteDeleteView(DeleteView):
         return self.post(*args, **kwargs)
 
 
+class SiteRefreshView(DetailView):
+    model = SiteToCheck
+    success_url = reverse_lazy('index')
+
+    def get(self, *args, **kwargs):
+        data = SiteDownChecker(self.get_object().url, user_name=self.request.user).status()
+        message = f"{self.get_object().url} Status: {data['last_status']}, Response time: {data['last_response_time']}"
+        messages.success(self.request, message)
+        return redirect(self.request.META.get('HTTP_REFERER'))
+
+
 @login_required
 def update_email(request):
     modify_email(request)
@@ -95,19 +121,8 @@ def update_email(request):
 
 
 @login_required
-def url_refresh(request, pk):
-    url = get_object_or_404(SiteToCheck, pk=pk, user=request.user)
-    if request.method == 'GET':
-        data = SiteDownChecker(url.url, user=request.user).status()
-        success_message_text = f"{url} Status: {data['last_status']}, Response time: {data['last_response_time']}"
-        messages.success(request, success_message_text)
-        return redirect(f'/details/{pk}')
-    return render(request, 'index.html')
-
-
-@login_required
 def check_all(request):
-    sites = SiteToCheck.objects.filter(user=request.user)
+    sites = SiteToCheck.objects.filter(user_name=request.user)
     for url in sites:
         SiteDownChecker(url, request.user).status()
     messages.success(request, 'Successfully refreshed sites statuses')
@@ -120,7 +135,7 @@ def modify_settings(request):
         response_json = json.dumps(response_json)
         data = json.loads(response_json)
         if data['id'] == 'proxy':
-            if config.PROXY is True:
+            if config.PROXY:
                 config.PROXY = False
             else:
                 config.PROXY = True

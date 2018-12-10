@@ -9,7 +9,7 @@ class BasicViewsTests(TransactionTestCase):
         self.user.set_password("test")
         self.user.save()
         self.client.force_login(self.user)
-        self.new_site = SiteToCheck.objects.create(url='http://www.test.html', user=self.user.username)
+        self.new_site = SiteToCheck.objects.create(url='http://www.test.html', user_name=self.user.username)
         self.new_site.save()
 
     def test_home_page_status_code(self):
@@ -27,7 +27,7 @@ class BasicViewsTests(TransactionTestCase):
         self.assertNotEqual(response, response1)
 
     def test_modify_email(self):
-        response = self.client.post('/', {'email': "user@mp.com"}, follow=True)
+        response = self.client.post('/', {'email': "user_name@mp.com"}, follow=True)
         self.assertEqual(response.status_code, 200)
         message = list(response.context.get('messages'))[0]
         self.assertEqual(message.tags, "success")

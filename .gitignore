@@ -18,7 +18,7 @@ pip-selfcheck.json
 *.tmPreferences.cache
 *.stTheme.cache
 
-# Workspace files are user-specific
+# Workspace files are user_name-specific
 *.sublime-workspace
 
 # Project files should be checked into the repository, unless a significant
@@ -112,13 +112,10 @@ fabric.properties
 #other
 .gitignore
 .idea/
-
-site-down-checker/__pycache__/
 db.sqlite3
-main/__pycache__/
-main/migrations/__pycache__/
 __pycache__/
 /.env_win/
 main/migrations/
 /site-down-checker/settings_secret.py
 .pyc
+/main/migrations/__init__.py

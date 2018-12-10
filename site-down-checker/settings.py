@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Application definition
 
@@ -133,7 +133,7 @@ MESSAGE_TAGS = {
 }
 
 CRONJOBS = [
-    ('0 8 * * *', 'main.calculations.my_cron_job')
+    ('0 8 * * *', 'main.calculations.cron_job')
 ]
 
 CONSTANCE_CONFIG = {

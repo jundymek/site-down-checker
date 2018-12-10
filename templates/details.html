@@ -58,7 +58,7 @@
                 </div>
             </div>
         </div>
-        {% if url.bad_data %}
+        {% if url.error_msg %}
             <br>
             <div class="row">
                 <div class="col-md-12">
@@ -74,7 +74,7 @@
                             </th>
                         </tr>
                         </thead>
-                        {% for i in  url.bad_data.splitlines %}
+                        {% for i in  url.error_msg.splitlines %}
                             <tr>
                                 <td>
                                     {{ i|stringformat:".16s" }}
