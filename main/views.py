@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import FormView, CreateView, DeleteView
@@ -93,7 +94,8 @@ class SiteDetailView(DetailView):
     context_object_name = 'url'
 
 
-class SiteDeleteView(DeleteView):
+class SiteDeleteView(UserPassesTestMixin, DeleteView):
+    login_url = '403.html'
     model = SiteToCheck
     success_url = reverse_lazy('index')
 
@@ -101,6 +103,9 @@ class SiteDeleteView(DeleteView):
         message = f'{self.get_object().url} was deleted'
         messages.success(self.request, message)
         return self.post(*args, **kwargs)
+
+    def test_func(self):
+        return self.request.user.username == str(self.get_object().user_name)
 
 
 class SiteRefreshView(DetailView):

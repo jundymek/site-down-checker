@@ -66,8 +66,8 @@ class SiteDownChecker:
             else:
                 r = requests.get(self.url, headers={
                     'User-Agent': 'Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1)'})
-            site = SiteToCheck.objects.get(url=self.url, user_name=self.user)
-            if site:
+            if SiteToCheck.objects.filter(url=self.url, user_name=self.user).exists():
+                site = SiteToCheck.objects.get(url=self.url, user_name=self.user)
                 site.update_success_status(proxy, r)
                 data = {
                     'last_status': site.last_status,

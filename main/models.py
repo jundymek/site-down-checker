@@ -20,7 +20,7 @@ class SiteToCheck(models.Model):
 
     def update_success_status(self, proxy, r):
         self.last_status = r.get_status_code() if proxy else r.status_code
-        self.last_response_time = self.time if proxy else r.status_code
+        self.last_response_time = self.time if proxy else r.elapsed.total_seconds()
         self.last_check = datetime.now().strftime("%Y-%m-%d %H:%M")
         if self.last_status != 200:
             if self.error_msg:
