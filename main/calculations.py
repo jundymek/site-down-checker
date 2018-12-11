@@ -8,6 +8,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 from .models import SiteToCheck
 
@@ -39,16 +41,21 @@ def cron_job():
 def update_user_email(request):
     response_json = json.dumps(request.POST)
     data = json.loads(response_json)
-    user = request.user
-    if user.email == data['email']:
-        error_message = 'It is your existing email address'
+    try:
+        validate_email(data['email'])
+        user = request.user
+        if user.email == data['email']:
+            error_message = 'It is your existing email address'
+            messages.error(request, error_message)
+        else:
+            user.email = data['email']
+            user.save()
+            success_message = f'You changed your email. Every messages will be send to \
+                        {request.user.email} until now.'
+            messages.success(request, success_message)
+    except ValidationError:
+        error_message = 'It is not valid email address'
         messages.error(request, error_message)
-    else:
-        user.email = data['email']
-        user.save()
-        success_message = f'You changed your email. Every messages will be send to \
-                    {request.user.email} until now.'
-        messages.success(request, success_message)
 
 
 class SiteDownChecker:
