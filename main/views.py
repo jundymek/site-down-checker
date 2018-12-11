@@ -12,7 +12,7 @@ from django.views.generic.edit import FormView, CreateView, DeleteView
 
 from .forms import SiteToCheckForm, MyUserCreationForm
 from .models import SiteToCheck
-from .calculations import SiteDownChecker, modify_email
+from .calculations import SiteDownChecker, update_user_email
 
 
 # ---------Custom error views----------- #
@@ -25,10 +25,17 @@ class Custom404Handler(TemplateView):
 
 
 class Custom500Handler(TemplateView):
-    template_name = '404.html'
+    template_name = '500.html'
 
 
 # ------------- End -------------------- #
+
+class IsOwnerTestMixin(UserPassesTestMixin):
+    login_url = '403.html'
+
+    def test_func(self):
+        return self.request.user.username == str(self.get_object().user_name)
+
 
 def login_view(request):
     username = request.POST['username']
@@ -81,11 +88,11 @@ class AddSiteToCheckView(FormView):
             success_message_text = f"The page hes been added. \n\nStatus: {data['last_status']}, Response time: \
             {data['last_response_time']}"
             messages.success(self.request, success_message_text)
-        return redirect('/')
+        return redirect('index')
 
     def form_invalid(self, form):
         messages.error(self.request, 'Please enter the correct URL')
-        return redirect('/')
+        return redirect('index')
 
 
 class SiteDetailView(DetailView):
@@ -94,8 +101,7 @@ class SiteDetailView(DetailView):
     context_object_name = 'url'
 
 
-class SiteDeleteView(UserPassesTestMixin, DeleteView):
-    login_url = '403.html'
+class SiteDeleteView(IsOwnerTestMixin, DeleteView):
     model = SiteToCheck
     success_url = reverse_lazy('index')
 
@@ -103,9 +109,6 @@ class SiteDeleteView(UserPassesTestMixin, DeleteView):
         message = f'{self.get_object().url} was deleted'
         messages.success(self.request, message)
         return self.post(*args, **kwargs)
-
-    def test_func(self):
-        return self.request.user.username == str(self.get_object().user_name)
 
 
 class SiteRefreshView(DetailView):
@@ -121,8 +124,8 @@ class SiteRefreshView(DetailView):
 
 @login_required
 def update_email(request):
-    modify_email(request)
-    return redirect('/')
+    update_user_email(request)
+    return redirect('index')
 
 
 @login_required
@@ -131,7 +134,7 @@ def check_all(request):
     for url in sites:
         SiteDownChecker(url, request.user).status()
     messages.success(request, 'Successfully refreshed sites statuses')
-    return redirect('/')
+    return redirect('index')
 
 
 def modify_settings(request):
@@ -144,4 +147,4 @@ def modify_settings(request):
                 config.PROXY = False
             else:
                 config.PROXY = True
-    return redirect('/')
+    return redirect('index')

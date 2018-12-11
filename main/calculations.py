@@ -36,7 +36,7 @@ def cron_job():
             send_email(output, user.email)
 
 
-def modify_email(request):
+def update_user_email(request):
     response_json = json.dumps(request.POST)
     data = json.loads(response_json)
     user = request.user
@@ -81,8 +81,8 @@ class SiteDownChecker:
             self.error = str(e)
             if not proxy and config.PROXY:
                 return self.status(proxy=True)
-            site = SiteToCheck.objects.get(url=self.url, user_name=self.user)
-            if site:
+            if SiteToCheck.objects.filter(url=self.url, user_name=self.user).exists():
+                site = SiteToCheck.objects.get(url=self.url, user_name=self.user)
                 site.update_exception_status(e)
                 data = {'last_status': site.last_status, 'last_response_time': site.last_response_time}
                 return data
