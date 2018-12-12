@@ -67,13 +67,14 @@ class SiteDownChecker:
         self.user = user_name
 
     def status(self, proxy=False):
+        if SiteToCheck.objects.filter(url=self.url, user_name=self.user).exists():
+            site = SiteToCheck.objects.get(url=self.url, user_name=self.user)
         try:
             if proxy:
                 r = ProxyRequests(self.url)
             else:
-                r = requests.get(self.url, headers={
-                    'User-Agent': 'Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1)'})
-            if SiteToCheck.objects.filter(url=self.url, user_name=self.user).exists():
+                r = requests.get(self.url)
+            if site:
                 site = SiteToCheck.objects.get(url=self.url, user_name=self.user)
                 site.update_success_status(proxy, r)
                 data = {
@@ -88,7 +89,7 @@ class SiteDownChecker:
             self.error = str(e)
             if not proxy and config.PROXY:
                 return self.status(proxy=True)
-            if SiteToCheck.objects.filter(url=self.url, user_name=self.user).exists():
+            if site:
                 site = SiteToCheck.objects.get(url=self.url, user_name=self.user)
                 site.update_exception_status(e)
                 data = {'last_status': site.last_status, 'last_response_time': site.last_response_time}
