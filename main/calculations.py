@@ -69,6 +69,8 @@ class SiteDownChecker:
     def status(self, proxy=False):
         if SiteToCheck.objects.filter(url=self.url, user_name=self.user).exists():
             site = SiteToCheck.objects.get(url=self.url, user_name=self.user)
+        else:
+            site = None
         try:
             if proxy:
                 r = ProxyRequests(self.url)
@@ -101,8 +103,6 @@ class SiteDownChecker:
         data = dict()
         SiteToCheck.objects.create(url=self.url,
                                    user_name=self.user,
-                                   last_status=None,
-                                   last_response_time=None,
                                    last_check=datetime.now().strftime("%Y-%m-%d %H:%M"),
                                    error_msg=str(
                                        datetime.now().strftime("%Y-%m-%d %H:%M")) + ': The url is not responding'
