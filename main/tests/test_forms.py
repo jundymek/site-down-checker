@@ -29,7 +29,7 @@ class UrlAddFormTest(TestCase):
 
     def test_success_add(self):
         form_data = {'url': 'http://www.onet.pl'}
-        form = SiteToCheckForm(form_data)
+        form = SiteToCheckForm(data=form_data)
         new_site = form.save()
         self.assertTrue(form.is_valid())
         self.assertEqual(new_site.url, form_data['url'])
@@ -51,9 +51,13 @@ class LoginTest(TestCase):
         }
         User.objects.create_user(**self.credentials)
 
-    def test_login(self):
+    def test_login_with_valid_data(self):
         response = self.client.post('/login/', self.credentials, follow=True)
         self.assertTrue(response.context['user'].is_authenticated)
+
+    def test_login_without_any_data(self):
+        response = self.client.post('/login/', {'username': '', 'password': ''}, follow=True)
+        self.assertFalse(response.context['user'].is_authenticated)
 
 
 class RegisterTest(TestCase):

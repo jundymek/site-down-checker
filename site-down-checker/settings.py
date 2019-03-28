@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'constance',
     'constance.backends.database',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

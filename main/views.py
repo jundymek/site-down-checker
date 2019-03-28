@@ -1,18 +1,20 @@
 import json
-from constance import config
 
-from django.shortcuts import render, redirect
+from constance import config
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import FormView, CreateView, DeleteView
+from rest_framework import viewsets
 
+from .calculations import SiteDownChecker, update_user_email
 from .forms import SiteToCheckForm, MyUserCreationForm
 from .models import SiteToCheck
-from .calculations import SiteDownChecker, update_user_email
+from .serializers import SiteToCheckSerializer
 
 
 # ---------Custom error views----------- #
@@ -119,7 +121,10 @@ class SiteRefreshView(DetailView):
         data = SiteDownChecker(self.get_object().url, user_name=self.request.user).status()
         message = f"{self.get_object().url} Status: {data['last_status']}, Response time: {data['last_response_time']}"
         messages.success(self.request, message)
-        return redirect(self.request.META.get('HTTP_REFERER'))
+        try:
+            return redirect(self.request.META.get('HTTP_REFERER'))
+        except TypeError:
+            return redirect('index')
 
 
 @login_required
@@ -148,3 +153,8 @@ def modify_settings(request):
             else:
                 config.PROXY = True
     return redirect('index')
+
+
+class SiteToCheckViewSet(viewsets.ModelViewSet):
+    queryset = SiteToCheck.objects.all()
+    serializer_class = SiteToCheckSerializer

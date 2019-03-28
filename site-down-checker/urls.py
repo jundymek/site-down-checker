@@ -15,14 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
 
 from main.views import Custom400Handler, Custom404Handler, Custom500Handler
+from main import views
 
 handler400 = Custom400Handler.as_view()
 handler404 = Custom404Handler.as_view()
 handler500 = Custom500Handler.as_view()
 
+router = routers.DefaultRouter()
+router.register(r'sites', views.SiteToCheckViewSet)
+
 urlpatterns = [
     path('', include('main.urls')),
     path('admin/', admin.site.urls),
+    path('api/', include(router.urls))
 ]
