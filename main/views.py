@@ -155,6 +155,13 @@ def modify_settings(request):
     return redirect('index')
 
 
+# ----------------API endpoints------------------------------
+
 class SiteToCheckViewSet(viewsets.ModelViewSet):
-    queryset = SiteToCheck.objects.all()
     serializer_class = SiteToCheckSerializer
+
+    def get_queryset(self):
+        queryset = SiteToCheck.objects.all()
+        print(self.request.user)
+        return queryset
+

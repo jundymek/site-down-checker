@@ -25,10 +25,11 @@ handler404 = Custom404Handler.as_view()
 handler500 = Custom500Handler.as_view()
 
 router = routers.DefaultRouter()
-router.register(r'sites', views.SiteToCheckViewSet)
+router.register(r'sites', views.SiteToCheckViewSet, base_name='MyModel')
 
 urlpatterns = [
     path('', include('main.urls')),
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls))
+    path('api/', include(router.urls)),
+    path('rest-auth/', include('rest_auth.urls'))
 ]
