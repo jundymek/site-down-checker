@@ -5,16 +5,18 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import FormView, CreateView, DeleteView
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
+from rest_framework.authentication import TokenAuthentication
 
 from .calculations import SiteDownChecker, update_user_email
 from .forms import SiteToCheckForm, MyUserCreationForm
 from .models import SiteToCheck
-from .serializers import SiteToCheckSerializer
+from .serializers import SiteToCheckSerializer, UserSerializer
 
 
 # ---------Custom error views----------- #
@@ -159,9 +161,13 @@ def modify_settings(request):
 
 class SiteToCheckViewSet(viewsets.ModelViewSet):
     serializer_class = SiteToCheckSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
-        queryset = SiteToCheck.objects.all()
-        print(self.request.user)
-        return queryset
+        return SiteToCheck.objects.filter(user_name=self.request.user)
 
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
