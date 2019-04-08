@@ -10,8 +10,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import FormView, CreateView, DeleteView
-from rest_framework import viewsets, permissions
-from rest_framework.authentication import TokenAuthentication
+from rest_framework import viewsets
 
 from .calculations import SiteDownChecker, update_user_email
 from .forms import SiteToCheckForm, MyUserCreationForm
@@ -161,11 +160,13 @@ def modify_settings(request):
 
 class SiteToCheckViewSet(viewsets.ModelViewSet):
     serializer_class = SiteToCheckSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticated,)
+
+    # authentication_classes = (SessionAuthentication,)
+    # permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
-        return SiteToCheck.objects.filter(user_name=self.request.user)
+        # return SiteToCheck.objects.filter(user_name=self.request.user)
+        return SiteToCheck.objects.all()
 
 
 class UserViewSet(viewsets.ModelViewSet):

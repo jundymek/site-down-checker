@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import SiteTable from './SitesTable'
 
 class Home extends Component {
   state = {
@@ -14,30 +15,9 @@ class Home extends Component {
     });
   }
   render() {
-    const { sites } = this.state;
-    const siteList = sites.length
-      ? (sites.map(function(site, index) {
-          return (
-            <tr key={site.id}>
-              <td>{index + 1}</td>
-              <td>{site.url}</td>
-            </tr>
-          );
-        }))
-      : null;
     return (
       <div className="containter">
-        <div className="center">
-          <table className="striped bordered">
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Url</th>
-              </tr>
-            </thead>
-            <tbody>{siteList}</tbody>
-          </table>
-        </div>
+        <SiteTable sites={this.state.sites} />
       </div>
     );
   }
