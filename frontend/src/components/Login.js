@@ -5,7 +5,10 @@ import { Redirect } from 'react-router-dom';
 class Login extends Component {
     constructor(props) {
         super(props);
-        this.state = { username: "", password: "", isAuthenticated: false, token: "" };
+        this.state = { 
+            username: "", 
+            password: "", 
+            isAuthenticated: false};
     }
 
     componentDidUpdate() {
@@ -19,32 +22,27 @@ class Login extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault()
-        console.log(this.state.username)
         axios.post('http://127.0.0.1:8000/rest-auth/login/', {
             username: this.state.username,
             password: this.state.password
           })
           .then(response => {
             const token = response.data.key;
-            this.setState({isAuthenticated: true, token: token});
+            localStorage.setItem('username', this.state.username)
+            localStorage.setItem('token', token)
+            this.setState({isAuthenticated: true})
           })
-        //   .then(function (response) {
-        //     console.log(response.data.key)
-        //     const token = response.data.key
-        //     this.setState({isAuthenticated: true, token: token})
-        //     console.log(this.state)
-        //   })
           .catch(error => {
             console.log(error.response.statusText);
-            alert('Zle dane')
+            alert('Please fill correct credentials')
             this.setState({username: "", password: ""})
           });
-        console.log('Submittedaaa')
+        console.log('Submitted')
     }
 
     render() {
         if (this.state.isAuthenticated) {
-            return <Redirect to={{pathname: '/', state:{token: this.state.token, isAuthenticated: true}}} />
+            return <Redirect to={{pathname: '/'}} />
         }
         return (
             <div className="container">
