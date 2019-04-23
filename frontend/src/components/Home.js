@@ -6,17 +6,15 @@ import { Redirect } from 'react-router-dom';
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      sites: [], 
-      username: localStorage.getItem('username') ? (localStorage.getItem('username')) : (''), 
-      token: localStorage.getItem('token') ? (localStorage.getItem('token')) : ('')};
+    this.state = {
+      sites: [],
+    }
   }
-
   componentDidMount() {
-    if (this.state.username) {
+    if (localStorage.getItem('token')) {
       axios.get("http://127.0.0.1:8000/api/sites/", {
         headers: {
-          Authorization: `Token ${this.state.token}`
+          Authorization: `Token ${localStorage.getItem('token')}`
         }
       }).then(res => {
         this.setState({
@@ -25,23 +23,22 @@ class Home extends Component {
       });
     } else {
       console.log('Something went wrong')
-      // return <Redirect to='http://www.onet.pl' />
     }
   }
 
   handleLogout = () => {
     localStorage.clear()
-    this.setState({username: ''})
   }
 
   render() {
-    if (!this.state.username) {
+    if (!localStorage.getItem('token')) {
       return (
         <Redirect to='/login' />
       )
     }
     return (
       <div className="containter">
+        <p>You are logged as {localStorage.getItem('username')}</p>
         <SiteTable sites={this.state.sites} />
         <button type="submit" onClick={this.handleLogout}>Logout</button>
       </div>
