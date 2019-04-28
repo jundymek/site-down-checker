@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class SiteToCheck(models.Model):
     url = models.URLField(max_length=100)
     user_name = models.ForeignKey(User, on_delete=models.CASCADE)
-    error_msg = models.TextField()
+    error_msg = models.TextField(null=True)
     last_status = models.IntegerField(null=True, default=None)
     last_response_time = models.FloatField(null=True, default=None)
     last_check = models.DateTimeField(null=True)

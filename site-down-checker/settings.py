@@ -69,6 +69,12 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:3000/'
 )
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
 ROOT_URLCONF = 'site-down-checker.urls'
 
 TEMPLATES = [

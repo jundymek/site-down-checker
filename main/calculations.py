@@ -116,7 +116,9 @@ class SiteDownChecker:
         data = {
             'last_status': r.status_code if not proxy else r.get_status_code(),
             'last_response_time': r.elapsed.total_seconds() if not proxy else self.time,
-            'last_check': datetime.now().strftime("%Y-%m-%d %H:%M")
+            'last_check': datetime.now().strftime("%Y-%m-%d %H:%M"),
+            'user_name': self.user,
+            'url': self.url
         }
         SiteToCheck.objects.create(url=self.url,
                                    user_name=self.user,
