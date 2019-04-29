@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import SiteTable from './SitesTable';
 import { Redirect } from 'react-router-dom';
+import NewUrl from './NewUrl';
 
 class Home extends Component {
   constructor(props) {
@@ -41,6 +42,7 @@ class Home extends Component {
         <p>You are logged as {localStorage.getItem('username')}</p>
         <SiteTable sites={this.state.sites} />
         <button type="submit" onClick={this.handleLogout}>Logout</button>
+        <NewUrl sites={this.state.sites}/>
       </div>
     );
   }
