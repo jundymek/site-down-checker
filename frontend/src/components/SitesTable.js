@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const SiteTable = ({ sites }) => {
   console.log(sites);
@@ -7,7 +8,7 @@ const SiteTable = ({ sites }) => {
         return (
           <tr key={site.id}>
             <td>{index + 1}</td>
-            <td>{site.url}</td>
+            <td><Link to={`/site/${site.id}`}>{site.url}</Link></td>
             <td>{site.last_status ? site.last_status : 'None'}</td>
             <td>{site.last_response_time ? site.last_response_time : 'None'}</td>
             <td>{site.last_check.slice(0, 16).replace("T", " ")}</td>
