@@ -31,6 +31,7 @@ class Login extends Component {
             localStorage.setItem('username', this.state.username)
             localStorage.setItem('token', token)
             this.setState({isAuthenticated: true})
+            // window.location.reload(); 
           })
           .catch(error => {
             console.log(error.response.statusText);
@@ -42,7 +43,7 @@ class Login extends Component {
 
     render() {
         if (this.state.isAuthenticated) {
-            return <Redirect to={{pathname: '/'}} />
+            return <Redirect to={{pathname: '/'}}  />
         }
         return (
             <div className="container">

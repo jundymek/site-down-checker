@@ -15,7 +15,7 @@ ReactDOM.render(
         <Route exact path='/' component={Home} />
         <Route path='/login' component={Login} />
         <Route exact path='/site/:id/' component={SiteDetail} />
-        <Route component={Error404} />
+        <Route path='*' component={Error404} />
     </Switch>
     </BrowserRouter>,
 document.getElementById('root')

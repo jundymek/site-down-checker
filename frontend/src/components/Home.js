@@ -3,6 +3,7 @@ import axios from "axios";
 import SiteTable from './SitesTable';
 import { Redirect } from 'react-router-dom';
 import NewUrl from './NewUrl';
+import AuthenticateCheck from './AuthenticateCheck';
 
 class Home extends Component {
   constructor(props) {
@@ -29,16 +30,12 @@ class Home extends Component {
 
   handleLogout = () => {
     localStorage.clear()
+    window.location.reload(); 
   }
 
   render() {
-    if (!localStorage.getItem('token')) {
-      return (
-        <Redirect to='/login' />
-      )
-    }
     return (
-      <div className="containter">
+      <div className="container">
         <p>You are logged as {localStorage.getItem('username')}</p>
         <SiteTable sites={this.state.sites} />
         <button type="submit" onClick={this.handleLogout}>Logout</button>
@@ -48,4 +45,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default AuthenticateCheck(Home);

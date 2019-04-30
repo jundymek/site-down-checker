@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router';
+import AuthenticateCheck from './AuthenticateCheck';
 
 class SiteDetail extends Component {
     constructor(props) {
@@ -45,4 +46,4 @@ class SiteDetail extends Component {
     }
 }
 
-export default SiteDetail;
+export default AuthenticateCheck(SiteDetail);
