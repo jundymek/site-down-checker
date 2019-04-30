@@ -7,13 +7,15 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
 import SiteDetail from './components/SiteDetail';
+import Error404 from './components/404';
 
 ReactDOM.render(
     <BrowserRouter>
     <Switch>
         <Route exact path='/' component={Home} />
         <Route path='/login' component={Login} />
-        <Route exact path='/site/:id' component={SiteDetail} />
+        <Route exact path='/site/:id/' component={SiteDetail} />
+        <Route component={Error404} />
     </Switch>
     </BrowserRouter>,
 document.getElementById('root')
