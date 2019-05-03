@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import SiteTable from './SitesTable';
-import { Redirect } from 'react-router-dom';
 import NewUrl from './NewUrl';
-import AuthenticateCheck from './AuthenticateCheck';
+import AuthenticateCheck from '../hoc/AuthenticateCheck';
+import { connect } from 'react-redux'
 
 class Home extends Component {
   constructor(props) {
@@ -30,10 +30,12 @@ class Home extends Component {
 
   handleLogout = () => {
     localStorage.clear()
-    window.location.reload(); 
+    alert('You were logged out')
+    this.props.updateToken()
   }
 
   render() {
+    console.log(this.props)
     return (
       <div className="container">
         <p>You are logged as {localStorage.getItem('username')}</p>
@@ -44,5 +46,15 @@ class Home extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    token: state.token
+  }
+}
 
-export default AuthenticateCheck(Home);
+const mapDispatchToProps = (dispatch) => {
+  return {
+      updateToken: () => { dispatch({type: 'UPDATE_TOKEN' })}
+  } 
+}
+export default connect(mapStateToProps, mapDispatchToProps)(AuthenticateCheck(Home));

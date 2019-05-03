@@ -4,20 +4,26 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Home from './components/Home';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import authReducer from './reducers/AuthReducer';
 import Login from './components/Login';
 import SiteDetail from './components/SiteDetail';
 import Error404 from './components/404';
 
+const store = createStore(authReducer);
+
 ReactDOM.render(
+    <Provider store={store}>
     <BrowserRouter>
     <Switch>
-        <Route exact path='/' component={Home} />
+        <Route exact path='/' component={App} />
         <Route path='/login' component={Login} />
         <Route exact path='/site/:id/' component={SiteDetail} />
         <Route path='*' component={Error404} />
     </Switch>
-    </BrowserRouter>,
+    </BrowserRouter>
+    </Provider>,
 document.getElementById('root')
 );
 

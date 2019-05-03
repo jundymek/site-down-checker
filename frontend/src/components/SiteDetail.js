@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router';
-import AuthenticateCheck from './AuthenticateCheck';
+import AuthenticateCheck from '../hoc/AuthenticateCheck';
 
 class SiteDetail extends Component {
     constructor(props) {
@@ -39,7 +39,7 @@ class SiteDetail extends Component {
                 <p>Last response time: {this.state.site.last_response_time}</p>
                 <p>Last check: {this.state.site.last_check}</p>
                 <p>Errors: {this.state.site.error_msg}</p>
-            </div>
+            </div>            
         ) : (
             <Redirect to={{pathname: '/*'}} />
         )
