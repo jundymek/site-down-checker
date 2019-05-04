@@ -6,12 +6,12 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import authReducer from './reducers/AuthReducer';
+import rootReducer from './reducers/RootReducer';
 import Login from './components/Login';
 import SiteDetail from './components/SiteDetail';
 import Error404 from './components/404';
 
-const store = createStore(authReducer);
+const store = createStore(rootReducer);
 
 ReactDOM.render(
     <Provider store={store}>

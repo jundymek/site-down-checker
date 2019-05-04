@@ -6,9 +6,10 @@ export default function requiresAuth(Component) {
     class AuthenticateCheck extends React.Component {
   
       render() {
+        console.log(this.props)
         return (
           <div className="authenticated">
-            {this.props.token ? (<Component {...this.props} />) : (<div>
+            {localStorage.getItem('token') ? (<Component {...this.props} />) : (<div>
                     <Login {...this.props} />
                 </div >)}
           </div>
@@ -19,6 +20,7 @@ export default function requiresAuth(Component) {
     const mapStateToProps = state => {
       return {
         token: state.token,
+        sites: state.sites
       };
     };
   

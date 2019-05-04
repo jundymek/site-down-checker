@@ -1,15 +1,15 @@
-import requests
 import json
 from datetime import datetime
-from constance import config
-from proxy_requests.proxy_requests import ProxyRequests
 
-from django.core.mail import send_mail
+import requests
+from constance import config
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.contrib import messages
-from django.core.validators import validate_email
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
+from django.core.validators import validate_email
+from proxy_requests.proxy_requests import ProxyRequests
 
 from .models import SiteToCheck
 
@@ -100,30 +100,22 @@ class SiteDownChecker:
                 return self.create_url_exception()
 
     def create_url_exception(self):
-        data = dict()
-        SiteToCheck.objects.create(url=self.url,
-                                   user_name=self.user,
-                                   last_check=datetime.now().strftime("%Y-%m-%d %H:%M"),
-                                   error_msg=str(
-                                       datetime.now().strftime("%Y-%m-%d %H:%M")) + ': The url is not responding'
-                                   )
-        data['last_status'] = None
-        data['last_response_time'] = None
-        data['error_msg'] = 'The url is not responding'
-        return data
+        new_object = SiteToCheck.objects.create(url=self.url,
+                                                user_name=self.user,
+                                                last_check=datetime.now().strftime("%Y-%m-%d %H:%M"),
+                                                error_msg=str(
+                                                    datetime.now().strftime(
+                                                        "%Y-%m-%d %H:%M")) + ': The url is not responding',
+                                                last_status=None,
+                                                last_response_time=None
+                                                )
+        return new_object
 
     def create_new_url_success(self, proxy, r):
-        data = {
-            'last_status': r.status_code if not proxy else r.get_status_code(),
-            'last_response_time': r.elapsed.total_seconds() if not proxy else self.time,
-            'last_check': datetime.now().strftime("%Y-%m-%d %H:%M"),
-            'user_name': self.user,
-            'url': self.url
-        }
-        SiteToCheck.objects.create(url=self.url,
-                                   user_name=self.user,
-                                   last_status=data['last_status'],
-                                   last_response_time=data['last_response_time'],
-                                   last_check=data['last_check'])
+        new_object = SiteToCheck.objects.create(url=self.url,
+                                                user_name=self.user,
+                                                last_status=r.status_code if not proxy else r.get_status_code(),
+                                                last_response_time=r.elapsed.total_seconds() if not proxy else self.time,
+                                                last_check=datetime.now().strftime("%Y-%m-%d %H:%M"))
 
-        return data
+        return new_object

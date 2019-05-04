@@ -90,8 +90,9 @@ class AddSiteToCheckView(FormView):
             messages.error(self.request, 'The page already exists in database')
         else:
             data = SiteDownChecker(cd['url'], user_name=self.request.user).status()
-            success_message_text = f"The page hes been added. \n\nStatus: {data['last_status']}, Response time: \
-            {data['last_response_time']}"
+            print(data)
+            success_message_text = f"The page hes been added. \n\nStatus: {data.last_status}, Response time: \
+            {data.last_response_time}"
             messages.success(self.request, success_message_text)
         return redirect('index')
 

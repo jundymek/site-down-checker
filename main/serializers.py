@@ -9,13 +9,15 @@ class SiteToCheckSerializer(serializers.ModelSerializer):
     class Meta:
         model = SiteToCheck
         fields = '__all__'
-        read_only_fields = ('user_name', 'error_msg', 'last_status', 'last_response_time', 'last_check')
+        read_only_fields = ('id', 'user_name', 'error_msg', 'last_status', 'last_response_time', 'last_check')
 
     def create(self, validated_data):
         user = self.context['user']
         if SiteToCheck.objects.filter(url=validated_data['url'], user_name=user).exists():
+            print('errrrrrrrrrr')
             raise serializers.ValidationError("Already exists")
         data = SiteDownChecker(url=validated_data['url'], user_name=user).status()
+        print(data)
         return data
 
 

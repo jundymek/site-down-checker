@@ -1,38 +1,38 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import AuthenticateCheck from '../hoc/AuthenticateCheck';
 
 class NewUrl extends Component {
     constructor(props) {
         super(props);
         this.state = {
             url: '',
-            sites: this.props.sites,
-            newSites: [],
-            success: false,
         }
     }
 
-    componentDidMount() {
-
-    }
 
     handleSubmit = (e) => {
-        // e.preventDefault()
-        console.log(this.state.url)
-        console.log(localStorage.getItem('token'))
+        e.preventDefault()
         axios.post("http://127.0.0.1:8000/api/sites/", {
             url: this.state.url
         }, {
-            headers: {'Authorization': `Token ${localStorage.getItem('token')}`}
+            headers: {'Authorization': `Token ${this.props.token}`}
         })
         .then(response => {
             console.log(response.data)
             alert('Udało się')
-            const newSite = response.data;
-            this.setState(prevState => ({
-                sites: [...prevState.sites, newSite]
-              }))
+            this.setState({ url: '' })
+            this.props.updateSites(response.data)
+            
         })
+        .catch(error => {
+            alert(error.response.data)
+        });
+    }
+
+    checkIfExists = (url) => {
+        console.log(this.props.sites.findIndex(url))
     }
 
     handleChange = (e) => {
@@ -52,4 +52,17 @@ class NewUrl extends Component {
     }
 }
 
-export default NewUrl;
+const mapStateToProps = (state) => {
+    return {
+      token: state.token,
+      sites: state.sites
+    }
+  }
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+        updateSites: (data) => {dispatch({type: 'UPDATE_SITES', data: data})},
+    } 
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthenticateCheck(NewUrl));

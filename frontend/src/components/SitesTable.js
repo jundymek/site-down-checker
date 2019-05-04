@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const SiteTable = ({ sites }) => {
   console.log(sites);
@@ -44,4 +45,12 @@ const SiteTable = ({ sites }) => {
   }
 };
 
-export default SiteTable;
+
+const mapStateToProps = (state) => {
+  return {
+    token: state.token,
+    sites: state.sites
+  }
+}
+
+export default connect(mapStateToProps)(SiteTable);
