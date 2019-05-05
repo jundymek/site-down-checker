@@ -26,6 +26,24 @@ class SiteTable extends Component {
       });
   }
 
+  refreshSite = (id, index) => {
+    console.log(index)
+    console.log(id)
+    console.log(this.props.token)
+    const url = `http://127.0.0.1:8000/api/sites/${id}/`
+    axios.put(url, {},{
+      headers: { 'Authorization': `Token ${this.props.token}` }
+    })
+      .then(response => {
+        console.log(response.data)
+        let data = response.data
+        this.props.refreshSite(id, index, data)
+      })
+      .catch(error => {
+        console.log(error)
+      });
+  }
+
   render() {
     console.log(this.props.sites)
     const siteList = this.props.sites.length
@@ -38,7 +56,7 @@ class SiteTable extends Component {
             <td>{site.last_response_time ? site.last_response_time : 'None'}</td>
             <td>{site.last_check.slice(0, 16).replace("T", " ")}</td>
             <td><button onClick={e => this.deleteSite(`${site.id}`)}>Delete</button></td>
-            <td><button>Refresh</button></td>
+            <td><button onClick={e => this.refreshSite(`${site.id}`, index)}>Refresh</button></td>
           </tr>
         );
       })
@@ -83,6 +101,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteSite: (id) => { dispatch({ type: 'DELETE_SITE', id: id }) },
+    refreshSite: (id, index, data) => { dispatch({ type: 'REFRESH_SITE', id: id, index: index, data:data})}
   }
 }
 

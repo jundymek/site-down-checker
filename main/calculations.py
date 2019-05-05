@@ -95,7 +95,12 @@ class SiteDownChecker:
             if site:
                 site = SiteToCheck.objects.get(url=self.url, user_name=self.user)
                 site.update_exception_status(e)
-                data = {'last_status': site.last_status, 'last_response_time': site.last_response_time}
+                data = {
+                    'last_status': site.last_status,
+                    'last_response_time': site.last_response_time,
+                    'last_check': site.last_check,
+                    'error_msg': site.error_msg
+                }
                 return data
             else:
                 return self.create_url_exception()

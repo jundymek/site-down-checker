@@ -6,6 +6,13 @@ from .models import SiteToCheck
 
 
 class SiteToCheckSerializer(serializers.ModelSerializer):
+
+    def __init__(self, *args, **kwargs):
+        """If object is being updated don't allow contact to be changed."""
+        super().__init__(*args, **kwargs)
+        if self.instance is not None:
+            self.fields.get('url').read_only = True
+
     class Meta:
         model = SiteToCheck
         fields = '__all__'
@@ -21,7 +28,8 @@ class SiteToCheckSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         user = self.context['user']
-        data = SiteDownChecker(url=validated_data['url'], user_name=user).status()
+        data = SiteDownChecker(url=instance.url, user_name=user).status()
+        print(data)
         instance.error_msg = data['error_msg']
         instance.last_status = data['last_status']
         instance.last_response_time = data['last_response_time']
