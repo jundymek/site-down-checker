@@ -27,7 +27,7 @@ class NewUrl extends Component {
             
         })
         .catch(error => {
-            alert(error.response.data)
+            alert(error)
         });
     }
 

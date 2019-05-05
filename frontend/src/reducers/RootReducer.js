@@ -24,6 +24,18 @@ const rootReducer = (state = initState, action) => {
             sites: [...state.sites, action.data]
         }
     }
+    if (action.type === 'DELETE_SITE') {
+        console.log(action)
+        let filteredSites = state.sites.filter(site => {
+            console.log(action.id)
+            console.log(site.id)
+            return action.id != site.id
+        });
+        return {
+            ...state,
+            sites: filteredSites
+        }
+    }
     return state;
 }
 
