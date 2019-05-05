@@ -10,9 +10,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import FormView, CreateView, DeleteView
-from rest_framework import viewsets, status, permissions
+from rest_framework import viewsets, permissions
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.response import Response
 
 from .calculations import SiteDownChecker, update_user_email
 from .forms import SiteToCheckForm, MyUserCreationForm
@@ -174,8 +173,6 @@ class SiteToCheckViewSet(viewsets.ModelViewSet):
 
     def get_serializer_context(self):
         return {'user': self.request.user}
-
-
 
 
 class UserViewSet(viewsets.ModelViewSet):

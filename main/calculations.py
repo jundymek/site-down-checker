@@ -82,7 +82,8 @@ class SiteDownChecker:
                 data = {
                     'last_status': site.last_status,
                     'last_response_time': site.last_response_time,
-                    'last_check': site.last_check
+                    'last_check': site.last_check,
+                    'error_msg': site.error_msg
                 }
                 return data
             else:

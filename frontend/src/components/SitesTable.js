@@ -38,6 +38,7 @@ class SiteTable extends Component {
             <td>{site.last_response_time ? site.last_response_time : 'None'}</td>
             <td>{site.last_check.slice(0, 16).replace("T", " ")}</td>
             <td><button onClick={e => this.deleteSite(`${site.id}`)}>Delete</button></td>
+            <td><button>Refresh</button></td>
           </tr>
         );
       })
