@@ -31,7 +31,7 @@ class SiteTable extends Component {
     console.log(id)
     console.log(this.props.token)
     const url = `http://127.0.0.1:8000/api/sites/${id}/`
-    axios.put(url, {},{
+    axios.put(url, {}, {
       headers: { 'Authorization': `Token ${this.props.token}` }
     })
       .then(response => {
@@ -44,10 +44,19 @@ class SiteTable extends Component {
       });
   }
 
+  refreshAll = () => {
+    for (let i = 0; i < this.props.sites.length; i++) {
+      let id = this.props.sites[i]['id']
+      let index = i
+      this.refreshSite(id, index)
+    }
+  }
+
   render() {
     console.log(this.props.sites)
     const siteList = this.props.sites.length
       ? this.props.sites.map((site, index) => {
+        console.log(this.props.sites)
         return (
           <tr key={site.id}>
             <td>{index + 1}</td>
@@ -77,6 +86,8 @@ class SiteTable extends Component {
               </thead>
               <tbody>{siteList}</tbody>
             </table>
+            <br />
+            <button onClick={this.refreshAll}>Refresh all</button>
           </div>
         </div>
       );
@@ -101,7 +112,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteSite: (id) => { dispatch({ type: 'DELETE_SITE', id: id }) },
-    refreshSite: (id, index, data) => { dispatch({ type: 'REFRESH_SITE', id: id, index: index, data:data})}
+    refreshSite: (id, index, data) => { dispatch({ type: 'REFRESH_SITE', id: id, index: index, data: data }) }
   }
 }
 
