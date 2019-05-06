@@ -12,6 +12,9 @@ from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import FormView, CreateView, DeleteView
 from rest_framework import viewsets, permissions
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .calculations import SiteDownChecker, update_user_email
 from .forms import SiteToCheckForm, MyUserCreationForm
@@ -178,3 +181,21 @@ class SiteToCheckViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class ProxyChange(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self):
+        user = self.request.user
+        return Response(user)
+
+
+@api_view(['GET', 'POST'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((permissions.IsAuthenticated,))
+def hello_world(request):
+    if request.method == 'POST':
+        return Response({"message": "Got some data!", "data": request.data})
+    return Response({"message": "Hello, world!"})

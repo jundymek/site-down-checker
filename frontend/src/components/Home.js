@@ -4,6 +4,8 @@ import SiteTable from './SitesTable';
 import NewUrl from './NewUrl';
 import AuthenticateCheck from '../hoc/AuthenticateCheck';
 import { connect } from 'react-redux';
+import { updateSites } from '../actions/siteActions';
+import { updateToken } from '../actions/authenticateActions';
 
 class Home extends Component {
   constructor(props) {
@@ -68,11 +70,9 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-      updateSites: (data) => {dispatch({type: 'UPDATE_SITES', data: data})},
-      updateToken: () => { dispatch({type: 'UPDATE_TOKEN' })},
-  } 
+const mapDispatchToProps = {
+  updateSites,
+  updateToken,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthenticateCheck(Home));

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { deleteSite, refreshSite } from '../actions/siteActions';
 
 
 class SiteTable extends Component {
@@ -109,11 +110,9 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    deleteSite: (id) => { dispatch({ type: 'DELETE_SITE', id: id }) },
-    refreshSite: (id, index, data) => { dispatch({ type: 'REFRESH_SITE', id: id, index: index, data: data }) }
-  }
-}
+const mapDispatchToProps = {
+  deleteSite, 
+  refreshSite, 
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SiteTable);

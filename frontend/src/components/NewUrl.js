@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import AuthenticateCheck from '../hoc/AuthenticateCheck';
+import { updateSites } from '../actions/siteActions'
 
 class NewUrl extends Component {
     constructor(props) {
@@ -21,9 +22,9 @@ class NewUrl extends Component {
         })
         .then(response => {
             console.log(response.data)
-            alert('Udało się')
             this.setState({ url: '' })
             this.props.updateSites(response.data)
+            setTimeout(() => alert('New site was added'), 1000)
             
         })
         .catch(error => {
@@ -59,10 +60,8 @@ const mapStateToProps = (state) => {
     }
   }
   
-  const mapDispatchToProps = (dispatch) => {
-    return {
-        updateSites: (data) => {dispatch({type: 'UPDATE_SITES', data: data})},
-    } 
+  const mapDispatchToProps = {
+      updateSites,
   }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthenticateCheck(NewUrl));
