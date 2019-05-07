@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 
 export default function requiresAuth(Component) {
     class AuthenticateCheck extends React.Component {
-  
       render() {
-        console.log(this.props)
         return (
           <div className="authenticated">
             {localStorage.getItem('token') ? (<Component {...this.props} />) : (<div>

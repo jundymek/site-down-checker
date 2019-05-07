@@ -24,25 +24,19 @@ class Home extends Component {
         this.props.updateSites(res.data)
       });
     } else {
-      console.log('Something went wrong')
     }
   }
 
   refreshSite = (id, index) => {
-    console.log(index)
-    console.log(id)
-    console.log(this.props.token)
     const url = `http://127.0.0.1:8000/api/sites/${id}/`
     axios.put(url, {},{
       headers: { 'Authorization': `Token ${this.props.token}` }
     })
       .then(response => {
-        console.log(response.data)
         let data = response.data
         this.props.refreshSite(id, index, data)
       })
-      .catch(error => {
-        console.log(error)
+      .catch(error => {    
       });
   }
 

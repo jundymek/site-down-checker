@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router';
+import { connect } from 'react-redux';
 import AuthenticateCheck from '../hoc/AuthenticateCheck';
 
 class SiteDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            site: [],
+            site: this.props.location.state ? this.props.location.state.site : '',
             error: false
         }
     }
 
     componentDidMount() {
-        if (localStorage.getItem('token')) {
+        if (!this.state.site) {
             axios.get(`http://127.0.0.1:8000/api/sites/${this.props.match.params.id}/`, {
                 headers: {
                     Authorization: `Token ${localStorage.getItem('token')}`
@@ -23,15 +24,35 @@ class SiteDetail extends Component {
                     site: res.data
                 });
             }).catch(error => {
-                console.log(error.response.status)
                 this.setState({ error: true })
             });
-        } else {
-            console.log('Something went wrong')
         }
     }
+
+    refreshDetailSite = (id) => {
+        const url = `http://127.0.0.1:8000/api/sites/${id}/`
+        axios.put(url, {}, {
+            headers: { 'Authorization': `Token ${this.props.token}` }
+        })
+            .then(response => {
+                let data = response.data
+                this.setState({
+                    site: {
+                        'url': data.url,
+                        'last_response_time': data.last_response_time,
+                        'last_status': data.last_status,
+                        'last_check': data.last_check,
+                        'id': data.id,
+                        'error_msg': data.error_msg
+                    }
+                })
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
     render() {
-        console.log(this.state.site)
+
         return !this.state.error ? (
             <div className="container">
                 <h1>{this.state.site.url}</h1>
@@ -39,11 +60,19 @@ class SiteDetail extends Component {
                 <p>Last response time: {this.state.site.last_response_time}</p>
                 <p>Last check: {this.state.site.last_check}</p>
                 <p>Errors: {this.state.site.error_msg}</p>
-            </div>            
+                <button onClick={e => this.refreshDetailSite(`${this.state.site.id}`)}>Refresh</button>
+            </div>
         ) : (
-            <Redirect to={{pathname: '/*'}} />
-        )
+                <Redirect to={{ pathname: '/*' }} />
+            )
     }
 }
 
-export default AuthenticateCheck(SiteDetail);
+const mapStateToProps = (state) => {
+    return {
+        token: state.token,
+        sites: state.sites
+    }
+}
+
+export default connect(mapStateToProps)(AuthenticateCheck(SiteDetail));
