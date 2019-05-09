@@ -6,6 +6,7 @@ import AuthenticateCheck from '../hoc/AuthenticateCheck';
 import { connect } from 'react-redux';
 import { updateSites } from '../actions/siteActions';
 import { updateToken } from '../actions/authenticateActions';
+import ProxyChangeToogle  from './ProxyChangeToggle';
 
 class Home extends Component {
   constructor(props) {
@@ -53,6 +54,7 @@ class Home extends Component {
         <button type="submit" onClick={this.handleLogout}>Logout</button>
         <SiteTable sites={this.props.sites} /><br/>
         <NewUrl sites={this.props.sites}/>
+        <ProxyChangeToogle />
       </div>
     );
   }

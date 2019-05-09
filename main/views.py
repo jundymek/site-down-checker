@@ -201,4 +201,5 @@ def change_proxy_setting(request):
             config.PROXY = False
         else:
             config.PROXY = True
+        print(config.PROXY)
         return Response({"PROXY": config.PROXY})
