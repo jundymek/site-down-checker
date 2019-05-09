@@ -34,5 +34,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
-    path('api/example/', views.hello_world)
+    path('api/proxy/', views.change_proxy_setting)
 ]

@@ -13,9 +13,9 @@ class SiteToCheck(models.Model):
     last_check = models.DateTimeField(null=True)
 
     def update_exception_status(self, e):
-        if self.error_msg:
-            self.error_msg += '\n'
-        self.error_msg += datetime.now().strftime("%Y-%m-%d %H:%M") + ': ' + str(e)
+        # if self.error_msg:
+        #     self.error_msg += '\n'
+        self.error_msg += datetime.now().strftime("%Y-%m-%d %H:%M") + ': ' + str(e) + '\n'
         self.save()
 
     def update_success_status(self, proxy, r):

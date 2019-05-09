@@ -14,10 +14,11 @@ class SiteDetail extends Component {
     }
 
     componentDidMount() {
+        console.log('this.state.site: ', this.state.site);
         if (!this.state.site) {
             axios.get(`http://127.0.0.1:8000/api/sites/${this.props.match.params.id}/`, {
                 headers: {
-                    Authorization: `Token ${localStorage.getItem('token')}`
+                    Authorization: `Token ${this.props('token')}`
                 }
             }).then(res => {
                 this.setState({
@@ -34,17 +35,9 @@ class SiteDetail extends Component {
         axios.put(url, {}, {
             headers: { 'Authorization': `Token ${this.props.token}` }
         })
-            .then(response => {
-                let data = response.data
+            .then(res => {
                 this.setState({
-                    site: {
-                        'url': data.url,
-                        'last_response_time': data.last_response_time,
-                        'last_status': data.last_status,
-                        'last_check': data.last_check,
-                        'id': data.id,
-                        'error_msg': data.error_msg
-                    }
+                    site: res.data
                 })
             })
             .catch(error => {
@@ -52,6 +45,11 @@ class SiteDetail extends Component {
             });
     }
     render() {
+        const error = this.state.site.error_msg.split('\n').map((error, index) =>{
+            return (
+                <p key={index}>{error}</p>
+            )
+        })
 
         return !this.state.error ? (
             <div className="container">
@@ -59,7 +57,9 @@ class SiteDetail extends Component {
                 <p>Last status: {this.state.site.last_status}</p>
                 <p>Last response time: {this.state.site.last_response_time}</p>
                 <p>Last check: {this.state.site.last_check}</p>
-                <p>Errors: {this.state.site.error_msg}</p>
+                {/* <p>Errors: {this.state.site.error_msg}</p> */}
+                {/* {this.state.site.error_msg.split('\n')} */}
+                {error}
                 <button onClick={e => this.refreshDetailSite(`${this.state.site.id}`)}>Refresh</button>
             </div>
         ) : (

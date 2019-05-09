@@ -103,15 +103,15 @@ class SiteDownChecker:
                 }
                 return data
             else:
-                return self.create_url_exception()
+                return self.create_url_exception(e)
 
-    def create_url_exception(self):
+    def create_url_exception(self, e):
         new_object = SiteToCheck.objects.create(url=self.url,
                                                 user_name=self.user,
                                                 last_check=datetime.now().strftime("%Y-%m-%d %H:%M"),
                                                 error_msg=str(
                                                     datetime.now().strftime(
-                                                        "%Y-%m-%d %H:%M")) + ': The url is not responding',
+                                                        "%Y-%m-%d %H:%M")) + str(e) + '\n',
                                                 last_status=None,
                                                 last_response_time=None
                                                 )

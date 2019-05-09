@@ -192,10 +192,13 @@ class ProxyChange(APIView):
         return Response(user)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 @authentication_classes((TokenAuthentication,))
 @permission_classes((permissions.IsAuthenticated,))
-def hello_world(request):
+def change_proxy_setting(request):
     if request.method == 'POST':
-        return Response({"message": "Got some data!", "data": request.data})
-    return Response({"message": "Hello, world!"})
+        if config.PROXY:
+            config.PROXY = False
+        else:
+            config.PROXY = True
+        return Response({"PROXY": config.PROXY})
