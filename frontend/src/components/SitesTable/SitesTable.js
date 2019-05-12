@@ -61,8 +61,8 @@ class SiteTable extends Component {
             <td>{site.last_status ? site.last_status : 'None'}</td>
             <td className="mob">{site.last_response_time ? site.last_response_time : 'None'}</td>
             <td className="mob">{site.last_check.slice(0, 16).replace("T", " ")}</td>
-            <td><button onClick={e => this.deleteSite(site.id)}>Delete</button></td>
-            <td><button onClick={e => this.refreshSite(site.id, index)}>Refresh</button></td>
+            <td><button className="material-icons" onClick={e => this.deleteSite(site.id)}>delete</button></td>
+            <td><button className="material-icons" onClick={e => this.refreshSite(site.id, index)}>refresh</button></td>
           </tr>
         );
       })
