@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import AuthenticateCheck from '../hoc/AuthenticateCheck';
-import { updateSites } from '../actions/siteActions'
+import AuthenticateCheck from '../../hoc/AuthenticateCheck';
+import { updateSites } from '../../actions/siteActions'
 
 class NewUrl extends Component {
     constructor(props) {

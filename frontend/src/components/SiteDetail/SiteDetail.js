@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import AuthenticateCheck from '../hoc/AuthenticateCheck';
+import AuthenticateCheck from '../../hoc/AuthenticateCheck';
 
 class SiteDetail extends Component {
     constructor(props) {

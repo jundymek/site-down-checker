@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { deleteSite, refreshSite } from '../actions/siteActions';
+import { deleteSite, refreshSite } from '../../actions/siteActions';
+import './SitesTable.css'
 
 
 class SiteTable extends Component {
+
 
   deleteSite = (id) => {
     const url = `http://127.0.0.1:8000/api/sites/${id}/`
@@ -57,10 +59,10 @@ class SiteTable extends Component {
               }
             }}>{site.url}</Link></td>
             <td>{site.last_status ? site.last_status : 'None'}</td>
-            <td>{site.last_response_time ? site.last_response_time : 'None'}</td>
-            <td>{site.last_check.slice(0, 16).replace("T", " ")}</td>
-            <td><button onClick={e => this.deleteSite(`${site.id}`)}>Delete</button></td>
-            <td><button onClick={e => this.refreshSite(`${site.id}`, index)}>Refresh</button></td>
+            <td className="mob">{site.last_response_time ? site.last_response_time : 'None'}</td>
+            <td className="mob">{site.last_check.slice(0, 16).replace("T", " ")}</td>
+            <td><button onClick={e => this.deleteSite(site.id)}>Delete</button></td>
+            <td><button onClick={e => this.refreshSite(site.id, index)}>Refresh</button></td>
           </tr>
         );
       })
@@ -75,8 +77,8 @@ class SiteTable extends Component {
                   <th>Id</th>
                   <th>Url</th>
                   <th>Last status</th>
-                  <th>Last response time</th>
-                  <th>Last checked</th>
+                  <th className="mob">Last response time</th>
+                  <th className="mob">Last checked</th>
                 </tr>
               </thead>
               <tbody>{siteList}</tbody>

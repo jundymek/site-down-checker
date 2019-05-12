@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import axios from "axios";
-import SiteTable from './SitesTable';
-import NewUrl from './NewUrl';
-import AuthenticateCheck from '../hoc/AuthenticateCheck';
+import SiteTable from '../SitesTable/SitesTable';
+import NewUrl from '../NewUrl/NewUrl';
+import AuthenticateCheck from '../../hoc/AuthenticateCheck';
 import { connect } from 'react-redux';
-import { updateSites } from '../actions/siteActions';
-import { updateToken } from '../actions/authenticateActions';
-import ProxyChangeToogle  from './ProxyChangeToggle';
+import { updateSites } from '../../actions/siteActions';
+import { updateToken } from '../../actions/authenticateActions';
+import ProxyChangeToggle  from '../ProxyChangeToggle/ProxyChangeToggle';
 
 class Home extends Component {
   constructor(props) {
@@ -54,7 +54,7 @@ class Home extends Component {
         <button type="submit" onClick={this.handleLogout}>Logout</button>
         <SiteTable sites={this.props.sites} /><br/>
         <NewUrl sites={this.props.sites}/>
-        <ProxyChangeToogle />
+        <ProxyChangeToggle />
       </div>
     );
   }

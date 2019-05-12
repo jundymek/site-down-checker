@@ -7,9 +7,9 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import rootReducer from './reducers/RootReducer';
-import Login from './components/Login';
-import SiteDetail from './components/SiteDetail';
-import Error404 from './components/404';
+import Login from './components/Login/Login';
+import SiteDetail from './components/SiteDetail/SiteDetail';
+import Error404 from './components/404/404';
 
 const store = createStore(rootReducer);
 
