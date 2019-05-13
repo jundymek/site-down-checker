@@ -24,6 +24,7 @@ class SiteTable extends Component {
   }
 
   refreshSite = (id, index) => {
+    document.getElementById("cover-spin").style.display = "block";
     const url = `http://127.0.0.1:8000/api/sites/${id}/`
     axios.put(url, {}, {
       headers: { 'Authorization': `Token ${this.props.token}` }
@@ -31,6 +32,7 @@ class SiteTable extends Component {
       .then(response => {
         let data = response.data
         this.props.refreshSite(id, index, data)
+        document.getElementById("cover-spin").style.display = "none";
       })
       .catch(error => {
         console.log(error);
@@ -38,7 +40,7 @@ class SiteTable extends Component {
   }
 
   refreshAll = () => {
-    for (let i = 0; i < this.props.sites.length; i++) {
+    for (let i = 0; i < this.props.sites.length; i++) {  
       let id = this.props.sites[i]['id']
       let index = i
       this.refreshSite(id, index)
@@ -86,12 +88,13 @@ class SiteTable extends Component {
             <br />
             <button onClick={this.refreshAll}>Refresh all</button>
           </div>
+          <div id="cover-spin"></div>
         </div>
       );
     } else {
       return (
         <div className="center">
-          <p>No data</p>
+        <div id="cover-spin"></div>
         </div>
       );
     }

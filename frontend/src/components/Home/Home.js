@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { updateSites } from '../../actions/siteActions';
 import { updateToken } from '../../actions/authenticateActions';
 import ProxyChangeToggle  from '../ProxyChangeToggle/ProxyChangeToggle';
+import './Home.css';
 
 class Home extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class Home extends Component {
     }
   }
   componentDidMount() {
+    document.getElementById("cover-spin").style.display = "block";
     if (!this.props.sites.length) {
       axios.get("http://127.0.0.1:8000/api/sites/", {
         headers: {
@@ -23,22 +25,11 @@ class Home extends Component {
         }
       }).then(res => {
         this.props.updateSites(res.data)
+        document.getElementById("cover-spin").style.display = "none";
       });
     } else {
+      document.getElementById("cover-spin").style.display = "none";
     }
-  }
-
-  refreshSite = (id, index) => {
-    const url = `http://127.0.0.1:8000/api/sites/${id}/`
-    axios.put(url, {},{
-      headers: { 'Authorization': `Token ${this.props.token}` }
-    })
-      .then(response => {
-        let data = response.data
-        this.props.refreshSite(id, index, data)
-      })
-      .catch(error => {    
-      });
   }
 
   handleLogout = () => {
@@ -55,6 +46,7 @@ class Home extends Component {
         <SiteTable sites={this.props.sites} /><br/>
         <NewUrl sites={this.props.sites}/>
         <ProxyChangeToggle />
+        <div id="cover-spin"></div>
       </div>
     );
   }
