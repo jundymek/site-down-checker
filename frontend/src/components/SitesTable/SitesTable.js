@@ -3,11 +3,17 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { deleteSite, refreshSite } from '../../actions/siteActions';
+import Loading from '../Loading/Loading'
 import './SitesTable.css'
 
 
 class SiteTable extends Component {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false
+    }
+  }
 
   deleteSite = (id) => {
     const url = `http://127.0.0.1:8000/api/sites/${id}/`
@@ -24,7 +30,7 @@ class SiteTable extends Component {
   }
 
   refreshSite = (id, index) => {
-    document.getElementById("cover-spin").style.display = "block";
+    this.setState({loading: true})
     const url = `http://127.0.0.1:8000/api/sites/${id}/`
     axios.put(url, {}, {
       headers: { 'Authorization': `Token ${this.props.token}` }
@@ -32,7 +38,7 @@ class SiteTable extends Component {
       .then(response => {
         let data = response.data
         this.props.refreshSite(id, index, data)
-        document.getElementById("cover-spin").style.display = "none";
+        this.setState({loading: false})
       })
       .catch(error => {
         console.log(error);
@@ -88,13 +94,13 @@ class SiteTable extends Component {
             <br />
             <button onClick={this.refreshAll}>Refresh all</button>
           </div>
-          <div id="cover-spin"></div>
+          {this.state.loading ? <Loading /> : null}
         </div>
       );
     } else {
       return (
         <div className="center">
-        <div id="cover-spin"></div>
+          No data.
         </div>
       );
     }

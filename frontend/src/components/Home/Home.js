@@ -7,17 +7,19 @@ import { connect } from 'react-redux';
 import { updateSites } from '../../actions/siteActions';
 import { updateToken } from '../../actions/authenticateActions';
 import ProxyChangeToggle  from '../ProxyChangeToggle/ProxyChangeToggle';
-import './Home.css';
+import Loading from '../Loading/Loading';
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       sites: this.props.sites,
+      loading: false
     }
   }
+
   componentDidMount() {
-    document.getElementById("cover-spin").style.display = "block";
+    this.setState({loading: true})
     if (!this.props.sites.length) {
       axios.get("http://127.0.0.1:8000/api/sites/", {
         headers: {
@@ -25,10 +27,10 @@ class Home extends Component {
         }
       }).then(res => {
         this.props.updateSites(res.data)
-        document.getElementById("cover-spin").style.display = "none";
+        this.setState({loading: false})
       });
     } else {
-      document.getElementById("cover-spin").style.display = "none";
+      
     }
   }
 
@@ -46,7 +48,7 @@ class Home extends Component {
         <SiteTable sites={this.props.sites} /><br/>
         <NewUrl sites={this.props.sites}/>
         <ProxyChangeToggle />
-        <div id="cover-spin"></div>
+        {this.state.loading ? <Loading /> : null}
       </div>
     );
   }
