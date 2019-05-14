@@ -23,13 +23,11 @@ class SiteToCheckSerializer(serializers.ModelSerializer):
         if SiteToCheck.objects.filter(url=validated_data['url'], user_name=user).exists():
             raise serializers.ValidationError("Already exists")
         data = SiteDownChecker(url=validated_data['url'], user_name=user).status()
-        print(data)
         return data
 
     def update(self, instance, validated_data):
         user = self.context['user']
         data = SiteDownChecker(url=instance.url, user_name=user).status()
-        print(data)
         instance.error_msg = data['error_msg']
         instance.last_status = data['last_status']
         instance.last_response_time = data['last_response_time']

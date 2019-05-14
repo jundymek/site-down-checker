@@ -89,12 +89,15 @@ class SiteDownChecker:
             else:
                 return self.create_new_url_success(proxy, r)
         except Exception as e:
-            self.error = str(e)
+            if "invalid literal for int() with base 10: ''" in str(e):
+                error = 'No connection'
+            else:
+                error = e
             if not proxy and config.PROXY:
                 return self.status(proxy=True)
             if site:
                 site = SiteToCheck.objects.get(url=self.url, user_name=self.user)
-                site.update_exception_status(e)
+                site.update_exception_status(error)
                 data = {
                     'last_status': site.last_status,
                     'last_response_time': site.last_response_time,
@@ -103,7 +106,7 @@ class SiteDownChecker:
                 }
                 return data
             else:
-                return self.create_url_exception(e)
+                return self.create_url_exception(error)
 
     def create_url_exception(self, e):
         new_object = SiteToCheck.objects.create(url=self.url,
@@ -111,7 +114,7 @@ class SiteDownChecker:
                                                 last_check=datetime.now().strftime("%Y-%m-%d %H:%M"),
                                                 error_msg=str(
                                                     datetime.now().strftime(
-                                                        "%Y-%m-%d %H:%M")) + str(e) + '\n',
+                                                        "%Y-%m-%d %H:%M")) + ': ' + str(e) + '\n',
                                                 last_status=None,
                                                 last_response_time=None
                                                 )
