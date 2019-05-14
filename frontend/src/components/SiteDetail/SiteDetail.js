@@ -14,20 +14,23 @@ class SiteDetail extends Component {
     }
 
     componentDidMount() {
-        console.log('this.state.site: ', this.state.site);
-        if (!this.state.site) {
-            axios.get(`http://127.0.0.1:8000/api/sites/${this.props.match.params.id}/`, {
-                headers: {
-                    Authorization: `Token ${this.props('token')}`
-                }
-            }).then(res => {
-                this.setState({
-                    site: res.data
-                });
-            }).catch(error => {
-                this.setState({ error: true })
+        axios.get(`http://127.0.0.1:8000/api/sites/${this.props.match.params.id}/`, {
+            headers: {
+                Authorization: `Token ${this.props.token}`
+            }
+        }).then(res => {
+            this.setState({
+                site: res.data
             });
-        }
+        }).catch(error => {
+            this.setState({ error: true })
+        });
+    }
+
+    componentWillUnmount() {
+        this.setState({
+            site: ''
+        })
     }
 
     refreshDetailSite = (id) => {
@@ -39,13 +42,14 @@ class SiteDetail extends Component {
                 this.setState({
                     site: res.data
                 })
+                this.props.location.state.site = res.data
             })
             .catch(error => {
                 console.log(error);
             });
     }
     render() {
-        const error = this.state.site.error_msg.split('\n').map((error, index) =>{
+        const error = this.state.site.error_msg.split('\n').map((error, index) => {
             return (
                 <p key={index}>{error}</p>
             )
