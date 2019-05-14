@@ -192,7 +192,7 @@ class ProxyChange(APIView):
         return Response(user)
 
 
-@api_view(['POST'])
+@api_view(['GET', 'POST'])
 @authentication_classes((TokenAuthentication,))
 @permission_classes((permissions.IsAuthenticated,))
 def change_proxy_setting(request):
@@ -203,3 +203,4 @@ def change_proxy_setting(request):
             config.PROXY = True
         print(config.PROXY)
         return Response({"PROXY": config.PROXY})
+    return Response({"PROXY": config.PROXY})

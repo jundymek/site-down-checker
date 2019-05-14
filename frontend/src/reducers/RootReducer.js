@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 
 const initState = {
     token: localStorage.getItem('token'),
-    sites: []
+    sites: [],
 }
 
 const rootReducer = (state = initState, action) => {
@@ -47,7 +47,6 @@ const rootReducer = (state = initState, action) => {
         });
         return newData
     }
-
     return state;
 }
 

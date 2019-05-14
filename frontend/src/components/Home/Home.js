@@ -30,7 +30,7 @@ class Home extends Component {
         this.setState({loading: false})
       });
     } else {
-      
+      this.setState({loading: false})
     }
   }
 

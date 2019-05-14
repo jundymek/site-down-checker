@@ -5,48 +5,59 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 
 class ProxyChangeToggle extends Component {
-  state = {
-    proxy: true,
-  };
+  constructor(props) {
+    super(props);
+    this.url = 'http://127.0.0.1:8000/api/proxy/'
+    this.state = {
+      proxy: undefined
+    }
+  }
 
-  handleChange = () => {
-    this.changeProxy()
-  };
+  componentDidMount() {
+    axios.get(this.url, {
+      headers: {
+        Authorization: `Token ${localStorage.getItem('token')}`
+      }
+    }).then(res => {
+      console.log(res.data)
+      this.setState({proxy: res.data['PROXY']})
+    })
+  }
 
   changeProxy = () => {
-    const url = `http://127.0.0.1:8000/api/proxy/`
-    axios.post(url, {}, {
-        headers: { 'Authorization': `Token ${this.props.token}` }
+    axios.post(this.url, {}, {
+      headers: { 'Authorization': `Token ${this.props.token}` }
     })
-        .then(res => {
-            this.setState({ proxy: res.data['PROXY'] });
-            console.log(res.data['PROXY'])
-        })
-        .catch(error => {
-            console.log(error);
-        });
+      .then(res => {
+        this.setState({ proxy: res.data['PROXY'] });
+        console.log(res.data['PROXY'])
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
     return (
-        <FormControlLabel 
-          control={
-            <Switch
-              checked={this.state.proxy}
-              onChange={this.handleChange}
-              value="proxy"
-            />
-          }
-          label="Proxy"
-        />
+      this.state.proxy !== undefined &&
+      <FormControlLabel
+        control={
+          <Switch
+            checked={this.state.proxy}
+            onChange={this.changeProxy}
+            value="proxy"
+          />
+        }
+        label="Proxy"
+      />
     );
   }
 }
 
 const mapStateToProps = (state) => {
-    return {
-        token: state.token,
-    }
+  return {
+    token: state.token,
+  }
 }
 
 export default connect(mapStateToProps)(ProxyChangeToggle);
