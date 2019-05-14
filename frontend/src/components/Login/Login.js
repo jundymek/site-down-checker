@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { updateToken } from '../../actions/authenticateActions';
+import { updateSites } from '../../actions/siteActions';
 
 class Login extends Component {
     constructor(props) {
@@ -11,13 +13,19 @@ class Login extends Component {
         }
     }
 
-    componentDidUpdate() {
-        console.log(this.state)
-    }
-
     handleChange(e, param) {
         e.preventDefault()
         this.setState({ [param]: e.target.value })
+    }
+
+    getNewData(reset) {
+        axios.get("http://127.0.0.1:8000/api/sites/", {
+            headers: {
+                Authorization: `Token ${localStorage.getItem('token')}`
+            }
+        }).then(res => {
+            this.props.updateSites(res.data, reset)
+        });
     }
 
     handleSubmit = (e) => {
@@ -31,6 +39,7 @@ class Login extends Component {
                 localStorage.setItem('username', this.state.username)
                 localStorage.setItem('token', token)
                 this.props.updateToken()
+                this.getNewData(true)
             })
             .catch(error => {
                 console.log(error);
@@ -60,9 +69,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        updateToken: () => { dispatch({ type: 'UPDATE_TOKEN' }) }
-    }
+const mapDispatchToProps = {
+    updateToken,
+    updateSites
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

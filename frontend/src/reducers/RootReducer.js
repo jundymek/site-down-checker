@@ -13,7 +13,7 @@ const rootReducer = (state = initState, action) => {
         }
     }
     if (action.type === 'UPDATE_SITES') {
-        if (state.sites.length === 0) {
+        if (state.sites.length === 0 || action.reset) {
             return {
                 ...state,
                 sites: action.data
@@ -24,6 +24,7 @@ const rootReducer = (state = initState, action) => {
             sites: [...state.sites, action.data]
         }
     }
+    
     if (action.type === 'DELETE_SITE') {
         let filteredSites = state.sites.filter(site => {
             return parseInt(action.id) !== site.id

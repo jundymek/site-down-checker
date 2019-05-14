@@ -12,7 +12,6 @@ class NewUrl extends Component {
         }
     }
 
-
     handleSubmit = (e) => {
         e.preventDefault()
         axios.post("http://127.0.0.1:8000/api/sites/", {
@@ -21,7 +20,6 @@ class NewUrl extends Component {
             headers: {'Authorization': `Token ${this.props.token}`}
         })
         .then(response => {
-            console.log(response.data)
             this.setState({ url: '' })
             this.props.updateSites(response.data)
             setTimeout(() => alert('New site was added'), 1000)

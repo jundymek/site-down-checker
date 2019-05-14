@@ -14,9 +14,10 @@ export const refreshSite = (id, index, data) => {
     }
 }
 
-export const updateSites = (data) => {
+export const updateSites = (data, reset=false) => {
     return {
         type: 'UPDATE_SITES',
-        data: data
+        data: data,
+        reset: reset
     }
 }
