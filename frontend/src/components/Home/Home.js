@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import SiteTable from '../SitesTable/SitesTable';
+import CustomizedTable from '../SitesTable/SitesTableMaterial';
 import NewUrl from '../NewUrl/NewUrl';
 import AuthenticateCheck from '../../hoc/AuthenticateCheck';
 import { connect } from 'react-redux';
@@ -8,6 +8,14 @@ import { updateSites } from '../../actions/siteActions';
 import { updateToken } from '../../actions/authenticateActions';
 import ProxyChangeToggle  from '../ProxyChangeToggle/ProxyChangeToggle';
 import Loading from '../Loading/Loading';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  width: 95%;
+  padding: 5px;
+  margin-right: auto;
+  margin-left: auto;
+`;
 
 class Home extends Component {
   constructor(props) {
@@ -42,14 +50,14 @@ class Home extends Component {
 
   render() {
     return (
-      <div className="container">
+      <Container>
         <p>You are logged as {localStorage.getItem('username')}</p>
         <button type="submit" onClick={this.handleLogout}>Logout</button>
-        <SiteTable sites={this.props.sites} /><br/>
+        <CustomizedTable sites={this.props.sites}/>
         <NewUrl sites={this.props.sites}/>
         <ProxyChangeToggle />
         {this.state.loading ? <Loading /> : null}
-      </div>
+      </Container>
     );
   }
 }
